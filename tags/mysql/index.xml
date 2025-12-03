@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mysql on Aurora</title><link>https://notes.yoooo.fun/tags/mysql/</link><description>Recent content in Mysql on Aurora</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Mar 2024 15:47:20 +0000</lastBuildDate><atom:link href="https://notes.yoooo.fun/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>Export Data from MySQL by mysqldump</title><link>https://notes.yoooo.fun/posts/mysql-export-data/</link><pubDate>Wed, 13 Mar 2024 15:47:20 +0000</pubDate><guid>https://notes.yoooo.fun/posts/mysql-export-data/</guid><description>&lt;h1 id="how-to-export-data-from-the-mysql"&gt;how to export data from the mysql
+&lt;/h1&gt;&lt;h2 id="use-mysqldump"&gt;use mysqldump
+&lt;/h2&gt;&lt;p&gt;Just for the mysql/mariadb using:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker container run -it --rm mysql:8 bash -c &lt;span class="s2"&gt;&amp;#34;echo -e &amp;#39;[mysqldump]\nuser=aurora\npassword=aurora&amp;#39; &amp;gt; ~/.my.cnf &amp;amp;&amp;amp; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; mysqldump -h 192.168.91.199 your_database_name&amp;#34;&lt;/span&gt; &amp;gt; exported.sql
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;For the SQLite compatibility:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker container run -it --rm mysql:8 bash -c &lt;span class="s2"&gt;&amp;#34;echo -e &amp;#39;[mysqldump]\nuser=aurora\npassword=aurora&amp;#39; &amp;gt; ~/.my.cnf &amp;amp;&amp;amp; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; mysqldump --compact --no-create-info --skip-add-locks --complete-insert -h 192.168.91.199 your_database_name \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; table1 \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; table2 \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; table3 \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; table4&amp;#34;&lt;/span&gt; &amp;gt; exported.sql
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Some Compatible Options for SQLite&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## because the sqlite cannot parse the &amp;#34;\&amp;#39;&amp;#34;, we should use double single quote instead&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sed -i &lt;span class="s2"&gt;&amp;#34;s/\\\&amp;#39;/&amp;#39;&amp;#39;/g&amp;#34;&lt;/span&gt; exported.sql
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="explanation-in-details"&gt;Explanation in Details
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;docker container run -it --rm mysql:8 bash -c&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mysql:8&lt;/code&gt; is the image name and tag&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-it&lt;/code&gt; is to run the container in interactive mode&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--rm&lt;/code&gt; is to remove the container after it is stopped&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bash -c&lt;/code&gt; is to run the command in the container&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The left is a combined command to create a &lt;code&gt;.my.cnf&lt;/code&gt; file and run &lt;code&gt;mysqldump&lt;/code&gt; command.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;echo -e '[mysqldump]\nuser=aurora\npassword=aurora' &amp;gt; ~/.my.cnf&lt;/code&gt; is to create a &lt;code&gt;.my.cnf&lt;/code&gt; file at &lt;code&gt;$HOME&lt;/code&gt; with the content
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;[mysqldump]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;user=aurora
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;password=aurora
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--compact&lt;/code&gt; is to use the compact format, which aims to remove the Comment Syntax, the &lt;code&gt;/*!&lt;/code&gt; and &lt;code&gt;*/&lt;/code&gt; are removed&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--no-create-info&lt;/code&gt; is to skip the &lt;code&gt;CREATE TABLE&lt;/code&gt; statement, because the statement is not compatible with SQLite&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--skip-add-locks&lt;/code&gt; is to skip the &lt;code&gt;LOCK TABLES&lt;/code&gt; statement, because the statement is not compatible with SQLite&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--complete-insert&lt;/code&gt; is to use the &lt;code&gt;INSERT INTO&lt;/code&gt; statement with the column names&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-h&lt;/code&gt; is to specify the db host&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;your_database_name&lt;/code&gt; is the database name&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;table1 table2 table3 table4&lt;/code&gt; are the exported table names, separated by space; if not specified, all tables will be exported&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt; exported.sql&lt;/code&gt; is to redirect the output to a file named &lt;code&gt;exported.sql&lt;/code&gt;, at the host current directory&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Stage on Aurora</title><link>https://notes.yoooo.fun/tags/multi-stage/</link><description>Recent content in Multi-Stage on Aurora</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 28 Jul 2023 14:06:12 +0000</lastBuildDate><atom:link href="https://notes.yoooo.fun/tags/multi-stage/index.xml" rel="self" type="application/rss+xml"/><item><title>How to handle libc version not found in docker multi-stage build</title><link>https://notes.yoooo.fun/posts/libc-version-not-found/</link><pubDate>Fri, 28 Jul 2023 10:48:32 +0000</pubDate><guid>https://notes.yoooo.fun/posts/libc-version-not-found/</guid><description>&lt;h1 id="about-debugging-the-issue-glibc-version-not-found"&gt;About debugging the issue &amp;ldquo;glibc version not found&amp;rdquo;
+&lt;/h1&gt;&lt;h2 id="pre"&gt;Pre
+&lt;/h2&gt;&lt;p&gt;Recently, I wanna build an image from the &lt;code&gt;previous Dockerfile&lt;/code&gt; (Which absolutely works fine before).&lt;/p&gt;
+&lt;p&gt;However, it stuck in &lt;code&gt;libc version not found&lt;/code&gt; when I ran it.&lt;/p&gt;
+&lt;h2 id="dockerfile"&gt;Dockerfile
+&lt;/h2&gt;&lt;p&gt;Here is my Dockerfile&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;golang:1.20&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;so&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# build dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;node:18&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;env&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# install node packages&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/distroless/nodejs18-debian11&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# running js app with golang dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="1st-issue"&gt;1st issue
+&lt;/h2&gt;&lt;p&gt;Upon running the image, it throws:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/usr/lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29 not found(required by ffi-napi)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I realized that maybe the problem is in the second &lt;code&gt;node:18&lt;/code&gt; image, so I changed it to &lt;code&gt;node:16&lt;/code&gt;, but the problem still exists; I tried &lt;code&gt;node:20&lt;/code&gt;
+image again, still again.&lt;/p&gt;
+&lt;p&gt;After a lot of searching, I found that the &lt;code&gt;node:18&lt;/code&gt; image was upgraded from the default system version &lt;code&gt;bullseye&lt;/code&gt; to &lt;code&gt;bookworm&lt;/code&gt;, so I tried to use
+the &lt;code&gt;node:18-bullseye&lt;/code&gt; image, and the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then, I dived into the second issue. &amp;gt;&amp;lt;&amp;hellip;&lt;/p&gt;
+&lt;h2 id="2nd-issue"&gt;2nd issue
+&lt;/h2&gt;&lt;p&gt;After I fixed the 1st issue, it threw another error:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/lib/x86_64-linux-gnu/libc.so.6: version GLIBC_2.32 not found(required by my golang dynamic lib)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Due to the experience of the first issue, after confirming that the &lt;code&gt;golang&lt;/code&gt; image has this version &lt;code&gt;golang:1.20-bullseye&lt;/code&gt;, I immediately tried
+the &lt;code&gt;golang:1.20-bullseye&lt;/code&gt; image, but the problem was not solved as I expected. Sad.&lt;/p&gt;
+&lt;p&gt;After a long time of thinking, I suddenly realized that maybe the system version(Ubuntu 22) of my docker is too high?&lt;/p&gt;
+&lt;p&gt;I immediately tried to use my Ubuntu 18.04 system version to run, and the problem was solved! Wonderful!!!&lt;/p&gt;
+&lt;p&gt;BTW, Changing &lt;code&gt;golang:1.20&lt;/code&gt; to &lt;code&gt;golang:1.20-bullseye&lt;/code&gt; is &lt;strong&gt;necessary&lt;/strong&gt;, if not, it still
+throws &lt;code&gt;/lib/x86_64-linux-gnu/libc.so.6: version GLIBC_2.32 not found&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="fixed-dockerfile"&gt;Fixed Dockerfile
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;golang:1.20-bullseye&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;so&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# build dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;node:18-bullseye&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;env&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# install node packages&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/distroless/nodejs18-debian11&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;&lt;/span&gt;&lt;span class="c"&gt;# running js app with golang dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="conclusion"&gt;Conclusion
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;When using FROM in Dockerfile, not only need to specify the software version, but also need to specify the system version&lt;/li&gt;
+&lt;li&gt;The host system version of Docker is not easy to control, just don&amp;rsquo;t be too high or too low&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
