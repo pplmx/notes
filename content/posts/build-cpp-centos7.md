@@ -4,17 +4,29 @@ categories:
 date: 2023-03-10T16:58:34Z
 description: build cpp project with gcc 11 on CentOS7 image
 keywords: cpp,gcc11,centos7
-lastmod: 2023-03-10T16:58:34Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - cpp
     - linux
-    - centos7
+    - centos
     - gcc
     - docker
 title: Build cpp with gcc11 on CentOS7
 ---
 
 
+
+> **⚠ EOL (End-of-Life) notice**: CentOS 7 reached EOL on 2024-06-30. The `centos:7`
+> image is frozen, and its yum repos now point at the retired `mirror.centos.org`, so
+> `yum install` inside the build may fail unless yum is reconfigured to use
+> `mirror/vault.centos.org`. The `devtoolset-11` SCL packages are also part of the EOL
+> CentOS 7 ecosystem, so their availability is no longer guaranteed. The pinned CMake
+> `3.24.2` release tarball still resolves (Kitware keeps old releases).
+>
+> For anything new, use a supported base image instead: e.g. `FROM almalinux:9` /
+> `FROM rockylinux:9`, where a modern compiler (gcc 12+, via the built-in
+> `gcc-toolset-12`/`13`) installs with `dnf install -y gcc g++ make`. The Dockerfile
+> below is kept as a self-contained historical build target.
 
 ```dockerfile
 ### BUILDING

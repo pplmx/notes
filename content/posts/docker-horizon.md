@@ -4,9 +4,9 @@ categories:
 date: 2020-08-27T17:06:35Z
 description: A simple horizon docker demo. FYI.
 keywords: OpenStack, horizon, dashboard
-lastmod: 2020-08-27T17:14:39Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - horizon
+    - docker
     - dashboard
 title: Horizon Image Based on Mitaka
 ---
@@ -14,6 +14,8 @@ title: Horizon Image Based on Mitaka
 
 
 # Horizon
+
+> Note: OpenStack Mitaka is a 2016-era release and long since EOL — running it today is only sensible for nostalgia/demos. The `purplemystic/mitaka_horizon` image's availability on Docker Hub is unverified. For a current deployment, use the official containerized tooling (Kolla / Kolla-Ansible) or the Horizon images shipped by OpenStack releases. The `service ...` (SysV) start commands inside the container predate systemd-era images; the docker run/exec syntax shown still works.
 
 **All accounts' password is `root`.**
 

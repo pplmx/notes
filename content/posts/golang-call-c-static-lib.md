@@ -14,18 +14,13 @@ keywords:
     - mingw
     - windows
     - linux
-lastmod: 2023-11-27T13:25:42Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - golang
-    - go
     - cgo
-    - static
-    - lib
     - c
-    - gcc
     - mingw
     - windows
-    - linux
 title: Call c-static-lib in Go
 ---
 
@@ -102,3 +97,8 @@ go build -o bin/hi main.go && ./bin/hi
 ## FYI
 
 [Source Code](https://github.com/pplmx/cgo_demo)
+
+## 相关文章
+
+- [Call cxx-static-lib in Go](https://blog.yoooo.fun/golang-call-cxx-static-lib.html)
+- [Why go build/test is so slow on Windows](https://blog.yoooo.fun/golang-build-slow-on-windows.html)

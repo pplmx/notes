@@ -4,10 +4,11 @@ categories:
 date: 2020-05-21T13:34:16Z
 description: Let's begin to learn what's Factory Pattern.
 keywords: factory pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - creational
+    - java
 title: Factory Pattern in Design Pattern
 ---
 
@@ -243,3 +244,9 @@ ShapeCreator创建子对象,都是不同的
 ShapeCreator2子对象都是同一个
 
 
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Abstract Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-abstract-factory.html)
+- [Builder Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-builder.html)
+- [Prototype Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-prototype.html)

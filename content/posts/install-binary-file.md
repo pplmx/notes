@@ -4,11 +4,11 @@ categories:
 date: 2023-03-10T16:45:12Z
 description: install golang and node binary packages on Unix-like systems
 keywords: binary,linux,go,node
-lastmod: 2023-08-18T10:45:12Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - binary
     - linux
-    - go
+    - golang
     - node
 title: Install binary packages on Unix-like systems
 ---
@@ -17,8 +17,11 @@ title: Install binary packages on Unix-like systems
 
 ```shell
 export TMP_DIR="/var/tmp"
-export DOWNLOAD_URL_GO="https://go.dev/dl/go1.21.0.linux-amd64.tar.gz"
-export DOWNLOAD_URL_NODE="https://nodejs.org/dist/v20.5.1/node-v20.5.1-linux-x64.tar.xz"
+# pin to current stable Go (go1.26.x) and active Node.js LTS (v24.x Krypton)
+export DOWNLOAD_URL_GO="https://go.dev/dl/go1.26.6.linux-amd64.tar.gz"
+export DOWNLOAD_URL_NODE="https://nodejs.org/dist/v24.19.0/node-v24.19.0-linux-x64.tar.xz"
+export GO_SHA256="708effb774be8237570d0add163225abbdfaf4fca28b2611df167beba4feef89"
+export NODE_SHA256="14b342e71204f811bde6153be8e04b62aef63c236fef92b55f9c83154b409647"
 export TAR_GO="go.tar.gz"
 export TAR_NODE="node.tar.xz"
 
@@ -33,6 +36,10 @@ curl -fsSL -o ${TMP_DIR}/${TAR_NODE} ${DOWNLOAD_URL_NODE}
 # by aria2
 rm -fr ${TMP_DIR}/${TAR_GO} && aria2c -d ${TMP_DIR} -o ${TAR_GO} ${DOWNLOAD_URL_GO}
 rm -fr ${TMP_DIR}/${TAR_NODE} && aria2c -d ${TMP_DIR} -o ${TAR_NODE} ${DOWNLOAD_URL_NODE}
+
+# verify SHA-256 checksums (published on https://go.dev/dl and https://nodejs.org/dist/v24.19.0/SHASUMS256.txt)
+cd ${TMP_DIR} && echo "${GO_SHA256}  ${TAR_GO}" | sha256sum -c -
+cd ${TMP_DIR} && echo "${NODE_SHA256}  ${TAR_NODE}" | sha256sum -c -
 
 # If not set to -z, or -j, or -J, etc., it will automatically decompress the files by file extension.
 sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xf ${TMP_DIR}/${TAR_GO}

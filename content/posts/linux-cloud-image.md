@@ -4,8 +4,9 @@ categories:
 date: 2020-04-18T20:56:44Z
 description: how to customize cloud image config
 keywords: cloud image, image, reset password
-lastmod: 2020-04-19T18:12:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - linux
     - image
 title: config in cloud image
 ---
@@ -14,12 +15,25 @@ title: config in cloud image
 
 # change cloud image default config
 
+> **⚠ EOL (End-of-Life) notice**: RHEL 7 reached EOL on 2024-06-30. The examples below use
+> `rhel-server-7.6.qcow2` — an EOL release, and `yum` is the RHEL 7-era package manager.
+> `virt-customize` itself is unchanged and fully supported on RHEL 8/9, AlmaLinux and
+> Rocky Linux (install via `dnf`, e.g. `sudo dnf install -y libguestfs-tools`). For a
+> modern target, replace the image with an up-to-date cloud image, for example:
+> - AlmaLinux 9: `AlmaLinux-9-GenericCloud-latest.x86_64.qcow2` (from
+>   https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/)
+> - Rocky Linux 9: `Rocky-9-GenericCloud-Base.latest.x86_64.qcow2` (from
+>   https://dl.rockylinux.org/pub/rocky/9/images/x86_64/)
+
 ## install package
 
 ```bash
+# RHEL 7 / CentOS 7 era (EOL): yum
 sudo yum install -y libguestfs-tools
 # or
 sudo yum install -y libguestfs-tools-c
+# RHEL 8/9 / AlmaLinux / Rocky Linux: dnf
+sudo dnf install -y libguestfs-tools
 ```
 
 ## Set root password

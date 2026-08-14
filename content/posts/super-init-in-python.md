@@ -4,9 +4,10 @@ categories:
 date: 2020-09-03T09:06:03Z
 description: You should invoke super().__init__() for every class.
 keywords: __init__, init, inherit, multi-inherit, python
-lastmod: 2020-09-04T16:24:29Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
+    - python
+    - OOP
 title: Call to __init__ of super class is missed
 ---
 

@@ -4,15 +4,13 @@ categories:
 date: 2025-01-25T14:30:00Z
 description: End-to-end automated Kubernetes cluster deployment solution using KVM virtualization and infrastructure-as-code practices.
 keywords: kubernetes automation, kvm deployments, infrastructure-as-code, cluster orchestration, cloud-init, virsh
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - kubernetes
     - kvm
     - containerd
     - cloud-init
-    - automation
-    - virsh
 title: Automated Kubernetes Deployments on KVM
-update: 2025-02-15T15:30:00Z
 ---
 
 
@@ -28,9 +26,13 @@ The script provides the following core functionalities:
 - Automatically creates `3` KVM VMs (`1` control plane + `2` worker nodes)
 - Rapid deployment using Ubuntu `24.04` cloud image
 - Auto-configures container runtime (containerd)
-- Deploys Kubernetes `v1.32.1`
+- Deploys Kubernetes `v1.36.3`
 - Supports `Flannel` CNI plugin
 - Provides complete cleanup functionality
+
+---
+
+> **Note (2026-08-14):** version pins refreshed against the EOL-safe line. `v1.32` reached EOL 2026-02-28, so this now targets **Kubernetes v1.36.3** (stable, EOL ~2027-06) with apt repo `pkgs.k8s.io/core:/stable:/v1.36/deb/` and **Calico v3.32.1**. The Flannel URL (`refs/heads/master`) still resolves; the `REMOTE_REMOTE_FLANNEL_URL` typo in the Flannel fallback path was fixed. Registry mirrors (`*.m.daocloud.io`, `*.dockerproxy.net`) were re-checked and remain reachable.
 
 ---
 
@@ -58,9 +60,9 @@ K_CONFIG_DIR="${K_DIR}/configs"
 K_IMAGE_DIR="${K_DIR}/images"
 CLOUD_IMAGE="${K_DOWNLOAD_DIR}/${UBUNTU_NICKNAME}-server-cloudimg-amd64.img"
 NETWORK_NAME="k8s-net"
-K8S_VERSION="v1.32.1"
+K8S_VERSION="v1.36.3"
 K8S_POD_NET_CIDR="10.244.0.0/16"
-CALICO_VERSION="v3.29.2"
+CALICO_VERSION="v3.32.1"
 REMOTE_CALICO_URL="https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/calico.yaml"
 REMOTE_FLANNEL_URL="https://raw.githubusercontent.com/flannel-io/flannel/refs/heads/master/Documentation/kube-flannel.yml"
 
@@ -258,7 +260,7 @@ write_files:
 
 # Commands to run at the end of the cloud-init process
 runcmd:
-  - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   - sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   - sudo apt-get update
   - sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
@@ -282,7 +284,7 @@ apt:
       source: deb [arch=amd64] https://mirrors.cernet.edu.cn/docker-ce/linux/ubuntu ${UBUNTU_NICKNAME} stable
       keyid: 0EBFCD88
     kubernetes.list:
-      source: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+      source: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.36/deb/ /
       keyid: 0D811D58
 
 power_state:
@@ -435,7 +437,7 @@ EOF
     fi
 
     log INFO "Try to installing CNI plugin (Flannel)..."
-    get_file_content "flannel.yml" "$REMOTE_REMOTE_FLANNEL_URL" | ssh ubuntu@k8s-cp-01 "cat > /var/tmp/flannel.yml"
+    get_file_content "flannel.yml" "$REMOTE_FLANNEL_URL" | ssh ubuntu@k8s-cp-01 "cat > /var/tmp/flannel.yml"
     ssh ubuntu@k8s-cp-01 << EOF
 cd /var/tmp
 kubectl create -f flannel.yml

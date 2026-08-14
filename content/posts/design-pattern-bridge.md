@@ -4,10 +4,11 @@ categories:
 date: 2020-06-10T18:24:49Z
 description: Let's begin to learn what's Bridge Pattern.
 keywords: bridge pattern, design pattern, java
-lastmod: 2020-06-10T18:27:22Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - structural
+    - java
 title: Bridge Pattern in Design Pattern
 ---
 
@@ -173,3 +174,10 @@ public class BridgePatternTester {
 [Draw a purple circle] radius = 3, x = 0, y = 6
 ```
 
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Adapter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-adapter.html)
+- [Composite Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-composite.html)
+- [Decorator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-decorator.html)
+- [Proxy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-proxy.html)

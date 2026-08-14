@@ -4,10 +4,11 @@ categories:
 date: 2020-06-15T13:57:46Z
 description: Let's begin to learn what's Command Pattern.
 keywords: command pattern, design pattern, java
-lastmod: 2020-06-15T14:00:07Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - behavioral
+    - java
 title: Command Pattern in Design Pattern
 ---
 
@@ -265,3 +266,12 @@ Stereo.setCD
 Stereo.setVolume: volume = 11
 Stereo.off
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Chain of Responsibility in Design Pattern](https://blog.yoooo.fun/design-pattern-chain4responsibility.html)
+- [Interpreter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-interpreter.html)
+- [Iterator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-iterator.html)
+- [Observer Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-observer.html)
+- [State Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-state.html)
+- [Strategy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-strategy.html)

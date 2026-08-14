@@ -4,8 +4,9 @@ categories:
 date: 2020-05-13T14:32:32Z
 description: Let's learn equals() and hashCode() in Java
 keywords: hashCode, equals, 31
-lastmod: 2020-05-13T14:53:35Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - java
     - hash
 title: equals() and hashCode() in Java
 ---
@@ -77,7 +78,9 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, email);
+        // note: Objects.hashCode(Object) takes a single argument;
+        // for multiple fields use Objects.hash(...)
+        return Objects.hash(id, name, email);
     }
 
     @Override
@@ -89,8 +92,8 @@ public class User {
             return false;
         }
         return id == user.id &&
-            Objects.equal(name, user.name) &&
-            Objects.equal(email, user.email);
+            Objects.equals(name, user.name) &&
+            Objects.equals(email, user.email);
     }
 }
 ```

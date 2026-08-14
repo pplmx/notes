@@ -4,9 +4,10 @@ categories:
 date: 2020-09-16T10:53:10Z
 description: HTTP Evolution in 1.0, 2.0, 3.0
 keywords: http/1.0, http/1.1, http/2.0, http/3.0
-lastmod: 2020-09-16T11:02:02Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - http
+    - network
 title: Http Version Comparison
 ---
 
@@ -16,15 +17,17 @@ title: Http Version Comparison
 
 ## Preview
 
-| Year |                         HTTP Version                          |
-|:----:|:-------------------------------------------------------------:|
-| 1996 |          [1.0](https://tools.ietf.org/html/rfc1945)           |
-| 1997 |          [1.1](https://tools.ietf.org/html/rfc2616)           |
-| 2000 |         [HTTPS](https://tools.ietf.org/html/rfc2818)          |
-| 2015 |          [2.0](https://tools.ietf.org/html/rfc7540)           |
-| ???  | [3.0 Draft](https://tools.ietf.org/html/draft-ietf-quic-http) |
+| Year |                        HTTP Version                         |
+|:----:|:-----------------------------------------------------------:|
+| 1996 |          [1.0](https://datatracker.ietf.org/doc/html/rfc1945)          |
+| 1997 |          [1.1](https://datatracker.ietf.org/doc/html/rfc2616)          |
+| 2000 |          [HTTPS](https://datatracker.ietf.org/doc/html/rfc2818)         |
+| 2015 |          [2.0](https://datatracker.ietf.org/doc/html/rfc7540)          |
+| 2022 |           [3.0](https://datatracker.ietf.org/doc/html/rfc9114)         |
 
 ![HTTP_Version](assets/HTTP-v1-v2-v3-stacks.png)
+
+> Note: HTTP/3 was standardized in June 2022 as RFC 9114, running over QUIC (RFC 9000). HTTP/1.1 and HTTP/2 now have updated normative references (RFC 9112 and RFC 9113 respectively), though RFC 2616/7540 remain the historical originals cited above.
 
 |                                             |                                                 |                                             |
 |---------------------------------------------|-------------------------------------------------|---------------------------------------------|
@@ -48,6 +51,8 @@ title: Http Version Comparison
   > It is done using streams which can be prioritized, can have dependencies and individual flow control.
   >
   > It also provides a feature called server push that allows the server to send data that the client will need but has not yet requested.
+  >
+  > Server Push was deprecated and removed by all major browsers in 2022 (Chrome 106+); prefer 103 Early Hints for that use case today.
 
 ![Comparison of HTTP versions](assets/Comparison-of-HTTP-versions.jpg)
 

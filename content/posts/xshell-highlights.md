@@ -4,9 +4,11 @@ categories:
 date: 2020-09-18T11:14:09Z
 description: Make your terminal more clear
 keywords: xshell, highlights, configuration
-lastmod: 2021-03-18T11:17:00Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - terminal
+    - windows
+    - linux
 title: XShell highlights
 ---
 

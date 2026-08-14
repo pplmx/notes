@@ -2,21 +2,34 @@
 categories:
     - python
 date: 2017-12-14T09:25:22Z
-description: spider QQ shuoshuo by python
-keywords: spider, python
-lastmod: 2020-11-11T16:31:07Z
+description: QZone 说说爬取与分析（历史方法，已随 2020 年后 QQ 空间改版失效，仅作学习参考）
+keywords: spider, python, scraping, selenium, wordcloud, qzone
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spider
     - data analysis
+    - python
+    - selenium
+    - wordcloud
 title: 抓取好友说说,进行简单的分析
 ---
 
 
 
+> **⚠️ 已失效（2026-08-14）**：本文方法在 2020 年 QQ 空间改版后已无法使用。
+> 旧的 `login_frame` / `switcher_plogin` 账号密码登录框已被扫码/短信验证替代，
+> 说说信息流与页面 DOM（如 `ol#msgList`、`a.c_tx.c_tx3.goDetail`）也已重构，
+> Selenium 自动登录抓取不可复现。本文仅作**历史/学习参考**保留：
+> 其中 CSV 处理、jieba 分词、wordcloud 词云等通用技巧仍然有效。
+> 如需获取 QQ 空间数据，请优先查阅**腾讯官方开放平台 / 官方 API**，
+> 或采用经授权的数据方案，并遵守平台条款与个人信息保护法规；
+> 不建议继续维护基于账号密码登录的浏览器自动化抓取。
+
 # Something needed before action
 
-    需要下载chromedriver.exe
-    需要用到selenium,jieba,wordcloud,BeautifulSoup,xlrd,xlwt,xlutils等模块
+    需要下载chromedriver.exe（selenium 4.6+ 内置 Selenium Manager，可自动下载驱动）
+    需要用到selenium,jieba,wordcloud,BeautifulSoup,xlrd,xlwt,xlutils,imageio等模块
+    （scipy.misc.imread 自 SciPy 1.0(2017) 已移除，用 imageio.imread 替代）
     都可以使用pip install 模块名 方式安装,如果安装失败,可以自己下载whl文件,并将whl文件
     放在python的安装目录Scripts下,再通过pip install 本地地址.whl,安装所需模块
 
@@ -44,9 +57,10 @@ import xlrd as xlrd
 import xlwt as xlwt
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
+from imageio import imread  # scipy.misc.imread 已移除：改用 imageio
 from numpy import array
-from scipy.misc import imread
 from selenium import webdriver
+from selenium.webdriver.common.by import By  # Selenium 4+/5+ 推荐显式 By 定位
 from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
 from xlutils.copy import copy
 
@@ -85,25 +99,26 @@ def get_shuoshuo(my_qq, my_pwd, friend_qq, path):
         time.sleep(2)
         driver.quit()
     try:
-        driver.find_element_by_id('login_div')
+        driver.find_element(By.ID, 'login_div')
     except Exception:
         print(u'非好友无法进入空间,无权限抓取内容')
         driver.quit()
     else:
+        # DEPRECATED: 2020 年后 QQ 空间已改扫码/短信验证,此登录框不复存在
         driver.switch_to.frame('login_frame')
-        driver.find_element_by_id('switcher_plogin').click()
-        driver.find_element_by_id('u').clear()
+        driver.find_element(By.ID, 'switcher_plogin').click()
+        driver.find_element(By.ID, 'u').clear()
         # 输入个人QQ
-        driver.find_element_by_id('u').send_keys(my_qq)
-        driver.find_element_by_id('p').clear()
+        driver.find_element(By.ID, 'u').send_keys(my_qq)
+        driver.find_element(By.ID, 'p').clear()
         # 输入个人密码
-        driver.find_element_by_id('p').send_keys(my_pwd)
-        driver.find_element_by_id('login_button').click()
+        driver.find_element(By.ID, 'p').send_keys(my_pwd)
+        driver.find_element(By.ID, 'login_button').click()
         time.sleep(3)
     driver.implicitly_wait(3)
     # 判断好友是否设置了权限
     try:
-        driver.find_element_by_id('QM_OwnerInfo_Icon')
+        driver.find_element(By.ID, 'QM_OwnerInfo_Icon')
     except Exception:
         print(u'空间加载异常,请重新打开')
         time.sleep(2)
@@ -126,7 +141,7 @@ def get_shuoshuo(my_qq, my_pwd, friend_qq, path):
                         'shuos': shuoshuos[i].text
                     }
                     write_data(data['time'], data['shuos'], path)
-                next_page = driver.find_element_by_link_text(u'下一页')
+                next_page = driver.find_element(By.LINK_TEXT, u'下一页')
                 page = page + 1
                 next_page.click()
                 time.sleep(3)
@@ -166,7 +181,7 @@ def shuoshuo_analysis(file_path):
                        max_words=1000,  # 最大词数
                        mask=back_color,  # 以该参数值作图绘制词云，这个参数不为空时，width和height会被忽略
                        max_font_size=100,  # 显示字体的最大值
-                       stopwords=STOPWORDS.add('苟利国'),  # 使用内置的屏蔽词，再添加'苟利国'
+                       stopwords=STOPWORDS | {'苟利国'},  # 内置屏蔽词再合并'苟利国'(set.add 返回 None,不可直接传入)
                        font_path="C:/Windows/Fonts/STFANGSO.ttf",  # 解决显示口字型乱码问题，可进入C:/Windows/Fonts/目录更换字体
                        random_state=42,  # 为每个词返回一个PIL颜色
                        # width=1000,  # 图片的宽
@@ -210,6 +225,10 @@ if __name__ == '__main__':
       为什么不在最初就保存为utf-8格式的csv文件呢?
         直接保存为csv utf-8格式,打开不会乱码,但是在读取时,第一行数据有问题,其他正常
     3.制作词云图片时,选择的背景图片,最好是对比度比较明显的
+    4.scipy.misc.imread 自 SciPy 1.0(2017) 起已移除,统一改用 imageio.imread(pip install imageio) 读取词云背景图
+    5.selenium 的 find_element_by_id 等旧 API 已在 Selenium 5 中移除,应使用 driver.find_element(By.ID, ...) 等显式定位方式
+    6.selenium 4.6+ 内置 Selenium Manager,首次运行会自动下载驱动,无需再手动下载 chromedriver.exe
+    7.xlwt/xlutils 已基本停止维护,新代码建议改用 openpyxl 读写 Excel
 
 [Github Source Code](https://github.com/pplmx/data_mining.git)
 

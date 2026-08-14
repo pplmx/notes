@@ -4,8 +4,9 @@ categories:
 date: 2020-05-06T14:55:08Z
 description: Time complexity in isEmpty() and size()
 keywords: time complexity, complexity
-lastmod: 2020-05-06T15:05:32Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - java
     - complexity
 title: Time complexity in isEmpty() and size()
 ---

@@ -4,9 +4,11 @@ categories:
 date: 2020-04-30T16:12:37Z
 description: Let's learn what's singleton
 keywords: singleton, design pattern, java
-lastmod: 2020-04-30T16:17:43Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - design pattern
+    - creational
+    - java
 title: Let's learn what's singleton
 ---
 

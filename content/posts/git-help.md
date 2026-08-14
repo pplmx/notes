@@ -4,10 +4,10 @@ categories:
 date: 2020-03-24T20:55:10Z
 description: alias git log & common git cmd
 keywords: git log, git submodules, list top n committers
-lastmod: 2021-04-08T17:44:31Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - git
-    - help
+    - general
 title: some helpful git cmd & alias
 ---
 
@@ -197,7 +197,11 @@ git ld
 
 ```bash
 # delete the file from the git history
-# https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/removing-sensitive-data-from-a-repository
+# DEPRECATED: `git filter-branch` is slow and heavily discouraged by Git.
+# Prefer `git filter-repo` (https://github.com/newren/git-filter-repo,
+# `pip install git-filter-repo`), see the "change user.name and user.email
+# in history" section below for the same approach with git-filter-repo.
+# Docs: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
 # BTW, You need to run this command from the toplevel of the working tree.
 git filter-branch \
 	--force \

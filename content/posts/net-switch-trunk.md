@@ -4,9 +4,10 @@ categories:
 date: 2020-04-18T21:18:09Z
 description: What's Trunk port?
 keywords: trunk port, switch
-lastmod: 2020-04-28T15:44:02Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - device
+    - network
 title: trunk in switch
 ---
 

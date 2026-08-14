@@ -4,11 +4,11 @@ categories:
 date: 2023-03-10T17:33:32Z
 description: create self-signed certificate
 keywords: rsa,openssl,certificates
-lastmod: 2024-01-06T22:21:46Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - rsa
-    - openssl
-    - certificates
+    - ssl
+    - security
+    - linux
 title: Create Self-signed Certificate with custom subject
 ---
 

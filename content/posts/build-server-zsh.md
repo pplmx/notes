@@ -4,9 +4,10 @@ categories:
 date: 2017-10-13T11:10:44Z
 description: install zsh on linux
 keywords: zsh, linux
-lastmod: 2025-01-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - linux
+    - shell
 title: linux服务器初建之zsh安装
 ---
 
@@ -191,3 +192,9 @@ alias find='fd'
     - Verify font installation
     - Check terminal emulator settings
     - Ensure terminal supports true color
+
+## 相关文章
+
+- [linux服务器初建之java环境](https://blog.yoooo.fun/build-server-java.html)
+- [linux服务器初建之mysql安装](https://blog.yoooo.fun/build-server-mysql.html)
+- [linux服务器初建之tomcat安装](https://blog.yoooo.fun/build-server-tomcat.html)

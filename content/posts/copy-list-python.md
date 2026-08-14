@@ -4,9 +4,10 @@ categories:
 date: 2021-01-22T16:35:46Z
 description: Let's understand what are the shallow-copy and deep-copy.
 keywords: copy, list, python, deep copy, shallow copy
-lastmod: 2021-01-22T16:38:46Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - python
+    - general
 title: How to Copy a List in Python
 ---
 

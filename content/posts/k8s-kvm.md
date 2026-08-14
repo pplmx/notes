@@ -4,13 +4,13 @@ categories:
 date: 2025-01-24T17:25:36Z
 description: Comprehensive guide to deploy Kubernetes cluster on KVM/Ubuntu, covering cloud-init automation and containerd configuration
 keywords: kubernetes deployment, kvm virtualization, ubuntu cluster, containerd runtime, production kubernetes
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - kubernetes
     - kvm
     - ubuntu
     - containerd
     - cloud-init
-    - k8s
 title: 'Kubernetes Cluster Deployment: KVM-based Production Setup on Ubuntu'
 ---
 
@@ -34,8 +34,13 @@ This manual provides detailed steps for deploying a complete Kubernetes cluster 
 ### Software Versions
 
 - OS: Ubuntu 22.04 LTS
-- Kubernetes: v1.32.1
+- Kubernetes: v1.35.6
 - Container Runtime: containerd (latest stable version)
+
+> **Note on version support**: The Kubernetes project only maintains the latest three minor releases.
+> As of 2026-08 those are v1.34-v1.36. The v1.32 pin in earlier versions of this manual is end-of-life and
+> no longer receives security updates. This manual targets v1.35 (supported until 2027-02). Adjust the
+> `v1.35` in the apt repo paths and `--kubernetes-version` below if you track a newer release.
 
 ## 1. Basic Environment Preparation
 
@@ -50,7 +55,7 @@ export X_CFG_DIR="${X_DIR}/configs"
 export X_NET="k8s-net"
 export X_OS_VARIANT="ubuntu22.04"
 export X_BASE_IMG="${X_DOWNLOAD_DIR}/jammy-server-cloudimg-amd64.img"
-export QCOW2_URL="https://cloud-images.ubuntu.com/jammy/releases/jammy/release/jammy-server-cloudimg-amd64.img"
+export QCOW2_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
 
 # Initialize directories
 sudo mkdir -p $X_DOWNLOAD_DIR $X_IMG_DIR $X_CFG_DIR
@@ -217,7 +222,7 @@ write_files:
 
 # Commands to run at the end of the cloud-init process
 runcmd:
-  - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   - sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   - sudo apt-get update
   - sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
@@ -241,7 +246,7 @@ apt:
       source: deb [arch=amd64] https://mirrors.cernet.edu.cn/docker-ce/linux/ubuntu jammy stable
       keyid: 0EBFCD88
     kubernetes.list:
-      source: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+      source: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /
       keyid: 0D811D58
 
 power_state:
@@ -364,13 +369,13 @@ EOF with no single quote to expand variables
 ssh ubuntu@k8s-cp-01 << EOF
 sudo kubeadm init \
     --image-repository=registry.aliyuncs.com/google_containers \
-    --kubernetes-version=v1.32.1 \
+    --kubernetes-version=v1.35.6 \
     --apiserver-advertise-address=${K8S_CP_IP} \
     --apiserver-bind-port=6443 \
     --pod-network-cidr=10.244.0.0/16 \
     --service-cidr=169.169.0.0/16 \
     --token=abcdef.0123456789abcdef \
-    --token-ttl=0"
+    --token-ttl=0
 EOF
 
 # Configure kubectl
@@ -381,7 +386,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 EOF
 
 # Deploy Flannel network plugin
-kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/v0.28.9/Documentation/kube-flannel.yml
 ```
 
 ### 4.2 Add Worker Nodes

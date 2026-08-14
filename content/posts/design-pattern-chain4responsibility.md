@@ -4,10 +4,11 @@ categories:
 date: 2020-06-04T08:50:47Z
 description: Let's begin to learn what's Chain of Responsibility Pattern.
 keywords: Chain of Responsibility Pattern, design pattern, java
-lastmod: 2020-06-04T08:57:56Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - behavioral
+    - java
 title: Chain of Responsibility in Design Pattern
 ---
 
@@ -217,3 +218,12 @@ WarnLogger.write: Here is a warn message.
 ErrorLogger.write: Here is a error message.
 ==========================
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Command Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-command.html)
+- [Interpreter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-interpreter.html)
+- [Iterator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-iterator.html)
+- [Observer Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-observer.html)
+- [State Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-state.html)
+- [Strategy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-strategy.html)

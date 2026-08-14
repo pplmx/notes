@@ -4,9 +4,10 @@ categories:
 date: 2020-04-18T21:20:37Z
 description: What's VLAN?
 keywords: vlan
-lastmod: 2020-04-19T18:12:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - device
+    - network
 title: VLAN
 ---
 

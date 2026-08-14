@@ -4,10 +4,11 @@ categories:
 date: 2020-06-01T16:12:19Z
 description: Let's begin to learn what's Observer Pattern.
 keywords: observer pattern, design pattern, java
-lastmod: 2020-06-01T16:30:23Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - behavioral
+    - java
 title: Observer Pattern in Design Pattern
 ---
 
@@ -357,3 +358,12 @@ HexObserver.update: A
 OctalObserver.update: 12
 BinaryObserver.update: 1010
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Chain of Responsibility in Design Pattern](https://blog.yoooo.fun/design-pattern-chain4responsibility.html)
+- [Command Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-command.html)
+- [Interpreter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-interpreter.html)
+- [Iterator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-iterator.html)
+- [State Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-state.html)
+- [Strategy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-strategy.html)

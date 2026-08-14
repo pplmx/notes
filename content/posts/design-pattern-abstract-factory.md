@@ -4,10 +4,11 @@ categories:
 date: 2020-05-22T13:28:40Z
 description: Let's begin to learn what's Abstract Factory Pattern.
 keywords: abstract factory pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - creational
+    - java
 title: Abstract Factory Pattern in Design Pattern
 ---
 
@@ -362,3 +363,9 @@ BUILD SUCCESSFUL in 1s
 2 actionable tasks: 2 executed
 13:18:54: Task execution finished 'AbstractFactoryPatternTester.main()'.
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Builder Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-builder.html)
+- [Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-factory.html)
+- [Prototype Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-prototype.html)

@@ -4,9 +4,10 @@ categories:
 date: 2017-12-22T14:07:46Z
 description: spider douban books by java
 keywords: spider, java
-lastmod: 2020-11-11T16:31:07Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spider
+    - python
 title: 抓取豆瓣编程书籍
 ---
 
@@ -17,6 +18,12 @@ title: 抓取豆瓣编程书籍
 ```text
     注意:
         lombok不仅需要导入包,还需要idea安装lombok插件
+
+    注意(2026-08更新):
+        book.douban.com 标签页目前仍可匿名访问(无需登录), 且本文用到的选择器
+        (ul.subject-list li.subject-item div.info、div.pub、span.rating_nums、div.paginator)
+        已验证仍与线上页面结构匹配。但豆瓣存在频率限制, 建议加大多线程请求间隔并做好限速。
+        依赖版本已更新到 2026-08 的最新版本, 详见下方 pom。
 ```
 
 <!-- more -->
@@ -26,31 +33,31 @@ title: 抓取豆瓣编程书籍
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>18.0</version>
+            <version>33.6.0-jre</version>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.18</version>
+            <version>1.18.46</version>
         </dependency>
 
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.8.3</version>
+            <version>1.23.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>4.5.14</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.17</version>
+            <version>5.5.1</version>
         </dependency>
     </dependencies>
 ```

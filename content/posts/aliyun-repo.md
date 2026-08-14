@@ -3,8 +3,8 @@ categories:
     - general
 date: 2020-04-18T20:02:12Z
 description: Some aliyun repo sources
-keywords: pip source, rpm repo, centos, ubuntu,
-lastmod: 2020-06-24T11:04:34Z
+keywords: pip source, rpm repo, centos, ubuntu
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - repo
     - pip
@@ -40,6 +40,8 @@ touch $HOME/pip/pip.ini
  ```
 
 ## centos8 Repo
+
+> ⚠️ **EOL**: CentOS 8 reached end-of-life on 2021-12-31. The repo URLs below only work against the archived (vault) mirror (`https://mirrors.aliyun.com/centos-vault/`), so this config is for legacy boxes only. For a maintained RHEL-compatible distro use **AlmaLinux** or **Rocky Linux** (aliyun mirrors: `https://mirrors.aliyun.com/almalinux/`, `https://mirrors.aliyun.com/rockylinux/`), or **Alibaba Cloud Linux / Anolis OS**.
 
 ```
 [AppStream]
@@ -86,6 +88,8 @@ enabled=1
 ```
 
 ## ubuntu18.04 Repo
+
+> ⚠️ **EOL**: Ubuntu 18.04 "bionic" standard support ended on 2023-05-31 (ESM via Ubuntu Pro only). For a maintained install, replace `bionic` in the lines below with the current LTS codename, e.g. `noble` (24.04 LTS, supported to 2029) or the newer 26.04 LTS (released 2026-04). The `mirrors.aliyun.com/ubuntu/` path itself is unchanged.
 
 ```
 deb https://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse

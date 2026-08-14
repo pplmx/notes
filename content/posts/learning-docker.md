@@ -4,7 +4,7 @@ categories:
 date: 2020-06-05T16:42:36Z
 description: Let's start to learn Docker.
 keywords: docker cli, common cli
-lastmod: 2024-01-06T22:21:46Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - cli
@@ -45,7 +45,7 @@ docker image pull purplemystic/centos
 docker container run --privileged -dit --name my_centos centos init
 
 # enter in a docker container
-docker container exec -it my_cenos bash
+docker container exec -it my_centos bash
 
 # stop a started container
 docker container stop my_centos
@@ -70,6 +70,8 @@ docker container cp my_centos:/var/tmp/test.log .
 docker container cp test.log my_centos:/var/tmp
 
 ```
+
+> Note: The official `centos` Docker Hub image was sunset after CentOS 7 EOL (2024-06-30) - `docker image pull centos` no longer returns a maintained image. For the exercises below use a maintained distro image (e.g. `debian`, `alpine`, `ubuntu`) or `quay.io/centos/centos:stream9`, and adjust `dnf`/`init` accordingly.
 
 ## Docker commit
 
@@ -100,7 +102,7 @@ docker container run -dit --privileged --name compute1 centos init
 
 docker container run -dit --privileged --name compute2 centos init
 
-docker container run -dit --privileged --name compute1 centos init
+docker container run -dit --privileged --name compute3 centos init
 
 # login to three nodes separately to run the following command
 # step1: to ensure sshd service is active
@@ -190,7 +192,7 @@ d2de5c3c084c        none                null                local
 ]
 
 # create a network(default create a network whose network type is bridge)
-docker networ create br-int
+docker network create br-int
 
 # create a host network
 docker network create --driver host host-net
@@ -211,7 +213,7 @@ Docker’s networking subsystem is pluggable, using drivers. Several drivers exi
 - `bridge`: The default network driver. If you don’t specify a driver, this is the type of network you are creating. **Bridge networks are usually
   used when your applications run in standalone containers that need to communicate.** See [bridge networks](https://docs.docker.com/network/bridge/).
 - `host`: For standalone containers, remove network isolation between the container and the Docker host, and use the host’s networking
-  directly. `host` is only available for swarm services on Docker 17.06 and higher. See [use the host network](https://docs.docker.com/network/host/).
+  directly. See [use the host network](https://docs.docker.com/network/host/).
 - `overlay`: Overlay networks connect multiple Docker daemons together and enable swarm services to communicate with each other. You can also use
   overlay networks to facilitate communication between a swarm service and a standalone container, or between two standalone containers on different
   Docker daemons. This strategy removes the need to do OS-level routing between these containers.

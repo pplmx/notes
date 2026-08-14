@@ -4,9 +4,10 @@ categories:
 date: 2020-04-18T21:08:20Z
 description: What's LLDP?
 keywords: lldp, TCP/IP
-lastmod: 2020-04-19T18:12:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - protocol
+    - network
+    - lldp
 title: Let's understand what's lldp.
 ---
 

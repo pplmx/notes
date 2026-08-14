@@ -4,8 +4,9 @@ categories:
 date: 2020-06-23T15:42:07Z
 description: Modifiers Order in Java
 keywords: modifier, order, modifier order
-lastmod: 2020-06-23T15:44:45Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - java
     - notes
 title: Modifiers Order in Java
 ---

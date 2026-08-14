@@ -4,9 +4,10 @@ categories:
 date: 2020-10-08T19:53:32Z
 description: A customized settings.json file
 keywords: windows terminal
-lastmod: 2021-01-22T16:45:24Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - win
+    - windows
+    - terminal
 title: A settings.json file for Windows Terminal
 ---
 

@@ -4,9 +4,10 @@ categories:
 date: 2020-05-08T16:20:48Z
 description: How to understand class method and static method for a Java-er.
 keywords: classmethod, staticmethod, java
-lastmod: 2023-08-18T13:13:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - python
+    - OOP
 title: Let's understand class and static method in Python for a Java-er
 ---
 

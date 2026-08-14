@@ -2,85 +2,88 @@
 categories:
     - python
 date: 2020-04-25T21:55:12Z
-description: Let's install multiple python versions in linux
-keywords: python, alternatives, multi versions
-lastmod: 2020-04-30T10:13:20Z
+description: Use uv to install and switch between multiple Python versions in Linux
+keywords: uv, python, version management, pyenv, multi versions
+lastmod: 2026-08-13T00:00:00Z
 tags:
     - python
-title: Let's install multiple python versions in linux
+    - uv
+title: Use uv to manage multiple Python versions on Linux
 ---
 
 
 
-# install multiple versions of python
+# Use uv to manage multiple Python versions
 
-[All Python Released Source](https://www.python.org/ftp/python/)
+> 更新说明：本文于 2026-08 重写。原方案（Python 2.7 + 3.8 源码编译并手写 alternatives）已过时——Python 2 已于 2020-01 停止维护。如今用 [uv](https://docs.astral.sh/uv/) 一条命令安装、切换多版本并管理虚拟环境，无需编译源码。
 
-**The following code has been verified in Centos8.**
+## 1. 安装 uv
 
 ```bash
-#!/usr/bin/env bash
-
-PYTHON_DIR="/opt/python/"
-DOWNLOAD_DIR="/home/download/"
-PYTHON_2_HOME="${PYTHON_DIR}/py2"
-PYTHON_3_HOME="${PYTHON_DIR}/py3"
-PYTHON_2_VERSION="2.7.17"
-PYTHON_3_VERSION="3.8.2"
-
-# ************ preparation ************
-mkdir -p ${DOWNLOAD_DIR}; mkdir -p ${PYTHON_2_HOME}; mkdir -p ${PYTHON_3_HOME}
-
-if ! [[ -f ${DOWNLOAD_DIR}/Python-${PYTHON_3_VERSION}.tgz ]]; then
-    wget -P ${DOWNLOAD_DIR} https://www.python.org/ftp/python/${PYTHON_3_VERSION}/Python-${PYTHON_3_VERSION}.tgz || exit
-fi
-
-if ! [[ -f ${DOWNLOAD_DIR}/Python-${PYTHON_2_VERSION}.tgz ]]; then
-    wget -P ${DOWNLOAD_DIR} https://www.python.org/ftp/python/${PYTHON_2_VERSION}/Python-${PYTHON_2_VERSION}.tgz || exit
-fi
-
-tar -zxvf ${DOWNLOAD_DIR}/Python-${PYTHON_3_VERSION}.tgz -C ${DOWNLOAD_DIR}
-tar -zxvf ${DOWNLOAD_DIR}/Python-${PYTHON_2_VERSION}.tgz -C ${DOWNLOAD_DIR}
-
-
-# ************ install dependency packages ************
-yum install -y gcc gcc-c++ automake make autoconf libtool diffutils sudo zlib-devel
-
-
-# ************ install python 2 ************
-cd ${DOWNLOAD_DIR}/Python-${PYTHON_2_VERSION} || return
-# if need, you can uncomment the following code
-# make clean
-./configure --prefix=${PYTHON_2_HOME} --enable-optimizations
-make
-sudo make install
-
-
-sleep 10s
-
-
-# ************ install python 3 ************
-cd ${DOWNLOAD_DIR}/Python-${PYTHON_3_VERSION} || return
-# if need, you can uncomment the following code
-# make clean
-./configure --prefix=${PYTHON_3_HOME} --enable-optimizations
-make
-sudo make install
-
-
-# ************ manage python version ************
-# remove old python version management
-alternatives --display python | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python >/dev/null 2>&1
-# remove old python2 version management
-alternatives --display python2 | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python2 >/dev/null 2>&1
-# remove old python3 version management
-alternatives --display python3 | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python3 >/dev/null 2>&1
-
-# rebuild all python version management
-alternatives --install /usr/bin/python python ${PYTHON_2_HOME}/bin/python2 1
-alternatives --install /usr/bin/python python ${PYTHON_3_HOME}/bin/python3 9
-
-alternatives --install /usr/bin/python2 python2 ${PYTHON_2_HOME}/bin/python2 9
-alternatives --install /usr/bin/python3 python3 ${PYTHON_3_HOME}/bin/python3 9
-
+# 官方推荐：curl 脚本安装
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
+
+备选：`pipx install uv`、`brew install uv`、`apt install uv`。
+
+验证并查看版本：
+
+```bash
+uv --version
+# 自更新
+uv self update
+```
+
+## 2. 安装多个 Python 版本
+
+```bash
+# 查看可安装的版本
+uv python list
+# 安装多个版本（uv 自动下载官方预编译解释器，无需 gcc / openssl-dev 等）
+uv python install 3.12 3.13 3.14
+# 查看已安装
+uv python list --only-installed
+```
+
+## 3. 为项目锁定版本
+
+```bash
+# 在项目根目录创建 .python-version 并写版本号
+uv python pin 3.14
+```
+
+或在 `pyproject.toml` 中声明：
+
+```toml
+[project]
+name = "my-project"
+requires-python = ">=3.11"
+```
+
+之后 `uv run` / `uv venv` 会自动选择 `.python-version` 指定的解释器。
+
+## 4. 创建虚拟环境并运行
+
+```bash
+uv venv                                  # 使用锁定版本建 .venv
+uv run python -c "import sys; print(sys.version)"
+uv run pytest                            # 在虚拟环境中运行任意命令
+uvx black --check .                      # 临时运行工具（等价 pipx）
+```
+
+## 5. 常用速查
+
+| 目标 | 命令 |
+|------|------|
+| 安装 Python 版本 | `uv python install <ver>` |
+| 项目锁定版本 | `uv python pin <ver>` |
+| 创建虚拟环境 | `uv venv` |
+| 环境内运行命令 | `uv run <cmd>` |
+| 添加/移除依赖 | `uv add <pkg>` / `uv remove <pkg>` |
+| 同步依赖 | `uv sync` |
+| 卸载解释器 | `uv python uninstall <ver>` |
+
+## 常见问题
+
+- 首次下载解释器较慢时，可配置镜像加速下载：`export UV_PYTHON_INSTALL_MIRROR=<镜像地址>`（国内用 github/ghproxy 或内网加速镜像）。
+- 发行版自带的系统 Python 不要删除（系统工具依赖它）；uv 管理的是独立安装的解释器，互不干扰。

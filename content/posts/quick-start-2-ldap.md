@@ -4,20 +4,21 @@ categories:
 date: 2023-04-13T23:45:36Z
 description: how to configure ldap based on traefik
 keywords: docker,traefik,proxy,ldap,user,https
-lastmod: 2024-08-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - traefik
     - proxy
     - ldap
     - login
-    - user
 title: 'Quick Start: LDAP'
 ---
 
 
 
 # Quick Start: LDAP
+
+> **Era note (2026):** The `osixia/openldap` and `osixia/phpldapadmin` images below are effectively unmaintained - frozen since ~Feb 2021 and shipping OpenLDAP 2.4 (EOL). The Traefik routing shown here works with any OpenLDAP image, but for new projects prefer a maintained one such as `vegardit/openldap` or `bitnami/openldap` (the free Bitnami image now lives in `bitnamilegacy` after the Broadcom change).
 
 If you want to use `bitnamic/openldap`,
 please follow this [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html).
@@ -28,7 +29,7 @@ please follow this [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-s
 >
 > OR
 >
-> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1-1-traefik-ssl.html)
+> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
 >
 > Note: If using HTTP, remove the `tls: {}` in dynamic configuration.
 
@@ -120,3 +121,14 @@ docker compose up -d
 ```
 
 Access: https://ldap.x.internal
+
+## 本系列（Quick Start）
+- [Quick Start: Traefik Dashboard with Custom Domain](https://blog.yoooo.fun/quick-start-1-traefik.html)
+- [Quick Start: Traefik with HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
+- [Quick Start: Traefik with HTTP/3](https://blog.yoooo.fun/quick-start-1_2-traefik-http3.html)
+- [Quick Start: LDAP](https://blog.yoooo.fun/quick-start-2-ldap.html)
+- [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html)
+- [Quick Start: Jenkins](https://blog.yoooo.fun/quick-start-3-jenkins.html)
+- [Quick Start: SonarQube](https://blog.yoooo.fun/quick-start-4-sonar.html)
+- [Quick Start: Gerrit](https://blog.yoooo.fun/quick-start-5-gerrit.html)
+- [Quick Start: SSP](https://blog.yoooo.fun/quick-start-6-ldap-ssp.html)

@@ -4,11 +4,11 @@ categories:
 date: 2023-09-02T21:02:18Z
 description: Show the top 30 most viewed videos in YouTube
 keywords: youtube, music, video, most viewed
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - youtube
     - music
     - video
-    - most viewed
 title: Top 30 most-viewed videos in YouTube
 ---
 
@@ -24,6 +24,8 @@ aqua { color: aqua }
 </style>
 
 # YouTube Most 30 Viewed Music Videos
+
+> **Historical snapshot:** every view count and the ranking below are as of **2023-09-02 21:00:00 UTC+8** and have drifted since. Current figures and even the ordering will differ — use the video links / FYI playlist for up-to-date numbers.
 
 - Counting at <aqua>2023-09-02 21:00:00 UTC+8</aqua>
 - Name with <pp>purple</pp> means for children songs

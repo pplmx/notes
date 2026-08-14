@@ -4,14 +4,10 @@ categories:
 date: 2024-10-01T18:47:20Z
 description: A git hook manager for Rust projects
 keywords: git hooks, git hook manager, husky, husky-rs, Rust, Git management
-lastmod: 2024-10-02T18:41:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - hook
-    - hooks
-    - git-hook
     - git-hooks
     - husky
-    - husky-rs
 title: My Open Source Project "husky-rs"
 weight: 98
 ---
@@ -23,7 +19,21 @@ weight: 98
 **husky-rs** is a lightweight Git hook manager tailored for Rust projects.
 
 - [View husky-rs on GitHub](https://github.com/pplmx/husky-rs)
-- [Get husky-rs on crates.io](https://crates.io/crates/husky-rs)
+- [Get husky-rs on crates.io](https://crates.io/crates/husky-rs) (latest: v0.4.0)
+
+## Install
+
+Add it to a Rust project (hooks are installed automatically on `cargo build`/`cargo test` once a `.husky` directory exists):
+
+```bash
+cargo add husky-rs        # or: cargo add --dev husky-rs
+```
+
+Or install the optional CLI (provides `husky init`, `husky add`, `husky list`):
+
+```bash
+cargo install husky-rs
+```
 
 ## Key Features
 

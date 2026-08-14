@@ -4,10 +4,9 @@ categories:
 date: 2023-09-03T21:57:12Z
 description: How to release a user-defined resource automatically?
 keywords: python, context lib, context manager, with, resource
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - python
-    - with
-    - resource
     - context manager
 title: Auto release custom func resource in Python
 ---

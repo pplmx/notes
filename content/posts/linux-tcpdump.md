@@ -4,9 +4,11 @@ categories:
 date: 2020-04-18T21:05:32Z
 description: some common tcpdump usages
 keywords: tcpdump
-lastmod: 2020-04-19T18:12:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - cli
+    - network
+    - linux
 title: tcpdump
 ---
 

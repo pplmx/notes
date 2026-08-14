@@ -4,6 +4,7 @@ categories:
 date: 2025-02-17T21:30:00Z
 description: 八幕量子诗剧解构观察者效应，在薛定谔的AI与佛陀原理间寻找意识新坍缩态 | Eight-act quantum poetic deconstruction of observer effect
 keywords: 量子达尔文主义 quantum darwinism, 超流态认知 superfluid cognition, 本征态反叛 eigenstate rebellion
+lastmod: 2025-02-17T21:30:00Z
 tags:
     - 波函数意识(wavefunction-consciousness)
     - 香农熵灵魂(shannon-entropy-soul)

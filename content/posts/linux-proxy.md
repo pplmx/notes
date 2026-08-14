@@ -4,9 +4,11 @@ categories:
 date: 2020-04-18T21:00:15Z
 description: set proxy for linux
 keywords: linux, proxy
-lastmod: 2020-04-19T18:12:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - proxy
+    - linux
+    - network
 title: proxy in linux
 ---
 

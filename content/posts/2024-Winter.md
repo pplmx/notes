@@ -2,6 +2,7 @@
 categories:
     - time
 date: 2024-12-01T09:17:32Z
+lastmod: 2024-12-01T09:17:32Z
 tags:
     - time
     - 2024
@@ -11,7 +12,7 @@ title: Winter in 2024
 
 
 
-# Welcome
+## Welcome
 
 Welcome to the quiet beauty of Winter in 2024.
 

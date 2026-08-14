@@ -4,6 +4,7 @@ categories:
 date: 2025-02-17T21:30:00Z
 description: 八种离经叛道的意识假说，从高维投影到BUG神学的认知革命 | Eight heretical hypotheses reconstructing consciousness from higher dimensions to bug theology
 keywords: 微生物量子纠缠 microbial quantum entanglement, 数字来世 digital afterlife, 废料天国 scrap nirvana
+lastmod: 2025-02-17T21:30:00Z
 tags:
     - 拓扑灵魂(topological-soul)
     - 暗物质意识(dark-matter-consciousness)

@@ -4,7 +4,7 @@ categories:
 date: 2023-04-13T17:25:36Z
 description: how to configure custom domain for traefik dashboard
 keywords: docker,traefik,proxy,custom domain
-lastmod: 2024-08-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - traefik
@@ -31,7 +31,7 @@ mkdir -p traefik/dynamic-conf && cd traefik && touch compose.yml traefik.yml dyn
 ```yaml
 services:
     traefik:
-        image: traefik:3.1
+        image: traefik:v3.7   # current stable v3 minor (3.7.x, Jul 2026)
         ports:
             - "80:80"
         environment:
@@ -111,3 +111,14 @@ docker compose up -d
 ```
 
 Access: http://traefik.x.internal
+
+## 本系列（Quick Start）
+- [Quick Start: Traefik Dashboard with Custom Domain](https://blog.yoooo.fun/quick-start-1-traefik.html)
+- [Quick Start: Traefik with HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
+- [Quick Start: Traefik with HTTP/3](https://blog.yoooo.fun/quick-start-1_2-traefik-http3.html)
+- [Quick Start: LDAP](https://blog.yoooo.fun/quick-start-2-ldap.html)
+- [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html)
+- [Quick Start: Jenkins](https://blog.yoooo.fun/quick-start-3-jenkins.html)
+- [Quick Start: SonarQube](https://blog.yoooo.fun/quick-start-4-sonar.html)
+- [Quick Start: Gerrit](https://blog.yoooo.fun/quick-start-5-gerrit.html)
+- [Quick Start: SSP](https://blog.yoooo.fun/quick-start-6-ldap-ssp.html)

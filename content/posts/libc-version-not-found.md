@@ -4,13 +4,11 @@ categories:
 date: 2023-07-28T10:48:32Z
 description: use specific software version and specify system version
 keywords: docker,multi-stage,libc,musl,libstdc++,version-not-found
-lastmod: 2023-07-28T14:06:12Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
-    - multi-stage
     - libc
-    - musl
-    - libstdc++
+    - troubleshooting
 title: How to handle libc version not found in docker multi-stage build
 ---
 

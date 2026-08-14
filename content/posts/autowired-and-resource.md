@@ -4,9 +4,10 @@ categories:
 date: 2017-10-16T15:41:38Z
 description: warning about @Autowired
 keywords: autowired, spring, java
-lastmod: 2023-08-18T11:25:04Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spring
+    - java
 title: IDEA对@Autowired的使用提示警告
 ---
 

@@ -3,14 +3,14 @@ categories:
     - java
 date: 2019-10-23T20:28:20Z
 description: deploy ejb with restful service to jboss
-keywords: ejb, restful, jboss
-lastmod: 2023-08-18T13:13:20Z
+keywords: ejb, restful, jboss, wildfly, jakarta
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - jboss
     - ejb
     - restful
-    - jboss
+    - jakarta
     - gradle
-    - maven
 title: deploy ejb with restful service to jboss
 ---
 
@@ -25,6 +25,8 @@ title: deploy ejb with restful service to jboss
 > Maven: 3.6.2
 >
 > We'll deploy an ear package with two war packages(One of them uses the rest service) to jboss.
+>
+> ⚠️ **Era note (2019)**: WildFly 18.0.1.Final (2020) is EOL — the current release is WildFly 41.0.0.Final (2026-07-16, Jakarta EE 10). This post uses Java EE 8 `javax.*` APIs (javaee-api:8.0.1), superseded by Jakarta EE 9+ `jakarta.*`. The steps remain valid for reproducing this on a matching legacy server; for new work use `jakarta.*` namespaces on a current WildFly.
 
 [Source code]( https://github.com/pplmx/DeployEjb2JBoss )
 
@@ -48,7 +50,7 @@ version '1.0-SNAPSHOT'
 
 allprojects {
     repositories {
-        jcenter()
+        // jcenter() removed: retired/read-only since 2021 and Gradle marks it deprecated
         mavenCentral()
     }
 }

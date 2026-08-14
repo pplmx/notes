@@ -4,10 +4,11 @@ categories:
 date: 2020-06-16T15:51:51Z
 description: Let's begin to learn what's Interpreter Pattern.
 keywords: interpreter pattern, design pattern, java
-lastmod: 2020-06-16T15:54:37Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - behavioral
+    - java
 title: Interpreter Pattern in Design Pattern
 ---
 
@@ -176,3 +177,12 @@ false
 true
 false
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Chain of Responsibility in Design Pattern](https://blog.yoooo.fun/design-pattern-chain4responsibility.html)
+- [Command Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-command.html)
+- [Iterator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-iterator.html)
+- [Observer Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-observer.html)
+- [State Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-state.html)
+- [Strategy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-strategy.html)

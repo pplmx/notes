@@ -3,8 +3,8 @@ categories:
     - java
 date: 2019-10-09T20:21:45Z
 description: deploy springboot war to jboss
-keywords: webflux, gradle, jboss
-lastmod: 2023-08-18T13:13:20Z
+keywords: webflux, gradle, jboss, wildfly, spring boot
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spring
     - gradle
@@ -13,6 +13,8 @@ title: deploy springboot to external container(JBoss)
 ---
 
 
+
+> **Era note (2026):** This 2019 walkthrough pins WildFly 18.0.1.Final / JDK 11 / Gradle 5.6 - all long EOL (WildFly 18 is unsupported; current is WildFly 41, released Jul 2026). Packaging a Spring Boot WebFlux app as a WAR for an external app server is no longer the recommended deployment model - prefer a self-executable JAR or a GraalVM native image. The mechanics below still work for legacy environments.
 
 > Wildfly: 18.0.1.Final
 >

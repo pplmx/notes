@@ -3,10 +3,12 @@ categories:
     - automation
 date: 2020-04-30T09:59:05Z
 description: Let's run a specified role in Ansible
-keywords: ansible, role, tags
-lastmod: 2023-08-18T13:13:20Z
+keywords: ansible, role, tags, lldp, lldpd
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - ansible
+    - lldp
+    - linux
 title: Run a specified role in ansible
 ---
 
@@ -64,14 +66,14 @@ Or like this
 
 ```yaml
 ---
-LLDPD_VERSION: 1.0.5
+LLDPD_VERSION: 1.0.22
 ```
 
 ### tasks/main.yml
 
 ```yaml
 ---
--   include: enable_lldp.yml
+-   include_tasks: enable_lldp.yml
 ```
 
 ### tasks/enable_lldp.yml
@@ -80,13 +82,12 @@ LLDPD_VERSION: 1.0.5
 ---
 -   name: Retrieve lldpd source code
     get_url:
-        # TODO replace it
-        url: https://media.luffy.cx/files/lldpd/lldpd-{{ LLDPD_VERSION }}.tar.gz
+        url: https://github.com/lldpd/lldpd/releases/download/{{ LLDPD_VERSION }}/lldpd-{{ LLDPD_VERSION }}.tar.gz
         dest: /tmp/lldpd-{{ LLDPD_VERSION }}.tar.gz
 -   name: Extract archive
     unarchive:
         # if configured like as the following, 'Retrieve lldpd source code' task can be removed
-        # src: https://media.luffy.cx/files/lldpd/lldpd-{{ LLDPD_VERSION }}.tar.gz
+        # src: https://github.com/lldpd/lldpd/releases/download/{{ LLDPD_VERSION }}/lldpd-{{ LLDPD_VERSION }}.tar.gz
         src: /tmp/lldpd-{{ LLDPD_VERSION }}.tar.gz
         dest: /tmp
 -   name: Configure install
@@ -172,3 +173,8 @@ ansible-playbook site.yml
 # or only run role: lldp
 ansible-playbook site.yml -t lldp
 ```
+
+## 相关文章
+
+- [ansible](https://blog.yoooo.fun/ansible.html)
+- [ansible install software from source](https://blog.yoooo.fun/ansible-install-from-source.html)

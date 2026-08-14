@@ -4,10 +4,10 @@ categories:
 date: 2020-03-22T21:10:26Z
 description: Difference between POP and OOP
 keywords: OOP, POP
-lastmod: 2020-03-22T21:28:11Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - OOP
-    - POP
+    - general
 title: Difference between OOP and POP
 ---
 

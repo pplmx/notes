@@ -4,13 +4,12 @@ categories:
 date: 2023-04-15T22:03:21Z
 description: how to configure gerrit with https based on traefik
 keywords: docker,traefik,proxy,gerrit,code review,review,https
-lastmod: 2024-08-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - traefik
     - proxy
     - gerrit
-    - review
 title: 'Quick Start: Gerrit'
 ---
 
@@ -18,13 +17,15 @@ title: 'Quick Start: Gerrit'
 
 # Quick Start: Gerrit
 
+> **Note (2026-08-14):** Re-verified against current Gerrit `3.14.x`. The image tag is now pinned (`gerritcodereview/gerrit:3.14.2`); the two-step flow (`command: init`, then daemon) still matches the current image entrypoint. The `[index] type = LUCENE`, `[download] schema = http/ssh`, `[receive] enableSignedPush`, LDAP keys (`accountPattern`/`accountFullName`/`accountEmailAddress`) and `smtpEncryption = SSL` are all still valid settings in the 3.14 config docs. Note the current image runs as `gerrit` (uid 1000) by default and ships on ubuntu/almalinux bases — keep `user: root` here because the mounted `/opt/gerrit/*` volumes are root-owned. Plaintext `smtpPass` is a placeholder; use a real credential or docker secret.
+
 ## Prerequisite
 
 > - [Traefik on HTTP](https://blog.yoooo.fun/quick-start-1-traefik.html)
 >
 > OR
 >
-> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1-1-traefik-ssl.html)
+> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
 >
 > Note: If using HTTP, remove the `tls: {}` in dynamic configuration.
 >
@@ -121,7 +122,9 @@ sudo install -d /opt/gerrit; cd /opt/gerrit; sudo install -d etc git db index ca
 ```yaml
 services:
     gerrit:
-        image: gerritcodereview/gerrit
+        # pinned to a release tag; 3.14.x is the current stable line
+        image: gerritcodereview/gerrit:3.14.2
+        # root matches the root-owned /opt/gerrit volumes and [container] user = root above
         user: root
         ports:
             - "29418:29418"
@@ -203,3 +206,14 @@ docker compose up -d
 ```
 
 Access: https://gerrit.x.internal
+
+## 本系列（Quick Start）
+- [Quick Start: Traefik Dashboard with Custom Domain](https://blog.yoooo.fun/quick-start-1-traefik.html)
+- [Quick Start: Traefik with HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
+- [Quick Start: Traefik with HTTP/3](https://blog.yoooo.fun/quick-start-1_2-traefik-http3.html)
+- [Quick Start: LDAP](https://blog.yoooo.fun/quick-start-2-ldap.html)
+- [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html)
+- [Quick Start: Jenkins](https://blog.yoooo.fun/quick-start-3-jenkins.html)
+- [Quick Start: SonarQube](https://blog.yoooo.fun/quick-start-4-sonar.html)
+- [Quick Start: Gerrit](https://blog.yoooo.fun/quick-start-5-gerrit.html)
+- [Quick Start: SSP](https://blog.yoooo.fun/quick-start-6-ldap-ssp.html)

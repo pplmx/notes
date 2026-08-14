@@ -4,14 +4,13 @@ categories:
 date: 2023-04-15T23:16:36Z
 description: how to configure bitnami openldap based on traefik
 keywords: docker,traefik,proxy,ldap,bitnami,openldap,user,https
-lastmod: 2024-08-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - traefik
     - proxy
     - ldap
     - login
-    - user
 title: 'Quick Start: LDAP by Bitnami'
 ---
 
@@ -25,7 +24,7 @@ title: 'Quick Start: LDAP by Bitnami'
 >
 > OR
 >
-> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1-1-traefik-ssl.html)
+> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
 >
 > Note: If using HTTP, remove the `tls: {}` in dynamic configuration.
 
@@ -71,6 +70,8 @@ networks:
 ```
 
 > Note: In production, use Docker secrets or environment variables for sensitive information like passwords.
+>
+> Note (2025+): Bitnami stopped publishing updates to its Docker Hub images in 2025. `bitnami/openldap` on Docker Hub is now the legacy (Debian-based) line — still pullable and functional, but no longer updated; Bitnami's current containers are commercial "Secure Images" (Photon-based) served from their own registry. The environment-variable interface used above (`LDAP_ADMIN_USERNAME`, `LDAP_ROOT`, `LDAP_PORT_NUMBER`, ...) is unchanged. For reproducibility, pin a specific legacy tag (format `bitnami/openldap:<version>-debian-12-r<N>`), or use an actively maintained alternative such as [osixia/openldap](https://hub.docker.com/r/osixia/openldap).
 
 ### ldap.yml in dir dynamic-conf
 
@@ -117,3 +118,14 @@ docker compose up -d
 ```
 
 Access: https://ldap.x.internal
+
+## 本系列（Quick Start）
+- [Quick Start: Traefik Dashboard with Custom Domain](https://blog.yoooo.fun/quick-start-1-traefik.html)
+- [Quick Start: Traefik with HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
+- [Quick Start: Traefik with HTTP/3](https://blog.yoooo.fun/quick-start-1_2-traefik-http3.html)
+- [Quick Start: LDAP](https://blog.yoooo.fun/quick-start-2-ldap.html)
+- [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html)
+- [Quick Start: Jenkins](https://blog.yoooo.fun/quick-start-3-jenkins.html)
+- [Quick Start: SonarQube](https://blog.yoooo.fun/quick-start-4-sonar.html)
+- [Quick Start: Gerrit](https://blog.yoooo.fun/quick-start-5-gerrit.html)
+- [Quick Start: SSP](https://blog.yoooo.fun/quick-start-6-ldap-ssp.html)

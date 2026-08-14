@@ -4,10 +4,10 @@ categories:
 date: 2020-04-25T21:58:58Z
 description: Let's start a simple schedule in github actions.
 keywords: schedule, github actions
-lastmod: 2020-11-11T16:31:07Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - schedule
-    - github
+    - github-actions
 title: How to set schedule by github actions?
 ---
 
@@ -37,7 +37,7 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             -
-                uses: actions/checkout@v2
+                uses: actions/checkout@v6
 
             # Setup git
             -
@@ -56,5 +56,7 @@ jobs:
                     git push https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git HEAD:${{ github.ref }} || echo "No changes to commit"
 
 ```
+
+> Note: GitHub pauses scheduled workflows in any repository with no activity for 60+ days (announced 2024). To keep the daily commit alive, make sure something else pushes to the repo periodically (or re-enable the workflow in Settings → Actions when it gets disabled).
 
 For the complete project, you can follow [here](https://github.com/pplmx/galaxy).

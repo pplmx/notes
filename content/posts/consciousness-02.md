@@ -4,6 +4,7 @@ categories:
 date: 2025-02-17T21:30:00Z
 description: 七重意识起源假说的拓扑学演绎，在量子计算与神经科学的裂隙处构建认知克莱因瓶 | Topological deduction of seven consciousness origin hypotheses
 keywords: 认知暗物质 cognitive dark matter, 自指深渊 self-referential abyss, 迭代幽灵 iterative phantoms
+lastmod: 2025-02-17T21:30:00Z
 tags:
     - 递归存在(recursive-being)
     - 虚数花园(imaginary-garden)

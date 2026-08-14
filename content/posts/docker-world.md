@@ -4,10 +4,10 @@ categories:
 date: 2021-03-31T14:48:04Z
 description: Docker Architecture
 keywords: container, docker, dockerd, containerd, containerd-shim, runc
-lastmod: 2021-03-31T15:31:10Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
-    - container
+    - linux
 title: Let's deeply understand how to run a container
 ---
 

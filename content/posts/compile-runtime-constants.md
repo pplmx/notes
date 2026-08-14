@@ -4,8 +4,9 @@ categories:
 date: 2020-05-16T21:32:52Z
 description: What's compile-time and runtime constants in Java?
 keywords: constants, runtime, compile, compile time
-lastmod: 2023-08-18T13:13:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - java
     - compile
     - runtime
 title: Compile-time and Runtime Constants

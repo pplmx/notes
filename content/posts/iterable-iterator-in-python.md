@@ -4,9 +4,10 @@ categories:
 date: 2020-05-06T16:16:51Z
 description: What's Iterable, Iterator, Generator in Python?
 keywords: iterable, iterator, generator
-lastmod: 2020-05-06T16:39:53Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - source
+    - python
+    - OOP
 title: Difference among Iterable, Iterator and Generator
 ---
 

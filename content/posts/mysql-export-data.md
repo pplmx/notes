@@ -4,11 +4,11 @@ categories:
 date: 2024-03-13T15:47:20Z
 description: Use mysqldump to export data from MySQL/MariaDB, and make it compatible with SQLite
 keywords: mysqldump, export, sqlite, mysql, mariadb
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - database
     - mysql
-    - mariadb
-    - sqlite
+    - sql
+    - linux
 title: Export Data from MySQL by mysqldump
 ---
 

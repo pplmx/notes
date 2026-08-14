@@ -4,10 +4,11 @@ categories:
 date: 2020-05-19T15:42:27Z
 description: Let's begin to learn what's Proxy Pattern.
 keywords: proxy pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - structural
+    - java
 title: Proxy Pattern in Design Pattern
 ---
 
@@ -145,3 +146,10 @@ public class Customer {
 
 }
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Adapter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-adapter.html)
+- [Bridge Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-bridge.html)
+- [Composite Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-composite.html)
+- [Decorator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-decorator.html)

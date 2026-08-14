@@ -11,13 +11,10 @@ keywords:
     - test
     - build slow
     - test slow
-lastmod: 2023-11-24T10:25:42Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - golang
-    - go
     - windows
-    - build
-    - test
 title: Why go build/test is so slow on Windows
 ---
 
@@ -63,3 +60,8 @@ Exclude the files used by `go`:
 ## BTW
 
 Maybe you can also exclude the process `go.exe` in "<pp>Exclusions</pp>" page, but I haven't tried it.
+
+## 相关文章
+
+- [Call c-static-lib in Go](https://blog.yoooo.fun/golang-call-c-static-lib.html)
+- [Call cxx-static-lib in Go](https://blog.yoooo.fun/golang-call-cxx-static-lib.html)

@@ -4,9 +4,10 @@ categories:
 date: 2020-04-18T20:24:55Z
 description: Let's start a simple sample in Ansible
 keywords: ansible, directory layout, hello world
-lastmod: 2023-08-18T13:13:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - ansible
+    - linux
 title: ansible
 ---
 
@@ -318,4 +319,9 @@ ansible-inventory -i inventory/prod.yml --list
         state: restarted
         args: enp2s0
 ```
+
+## 相关文章
+
+- [ansible install software from source](https://blog.yoooo.fun/ansible-install-from-source.html)
+- [Run a specified role in ansible](https://blog.yoooo.fun/ansible-role-tags.html)
 

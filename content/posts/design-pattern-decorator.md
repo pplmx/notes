@@ -4,10 +4,11 @@ categories:
 date: 2020-05-24T21:12:03Z
 description: Let's begin to learn what's Decorator Pattern.
 keywords: decorator pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - structural
+    - java
 title: Decorator Pattern in Design Pattern
 ---
 
@@ -218,3 +219,10 @@ RedShapeDecorator.setRedBorder
 VioletShapeDecorator.setVioletBorder
 VioletShapeDecorator.setVioletBorder
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Adapter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-adapter.html)
+- [Bridge Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-bridge.html)
+- [Composite Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-composite.html)
+- [Proxy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-proxy.html)

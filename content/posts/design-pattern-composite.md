@@ -4,10 +4,11 @@ categories:
 date: 2020-06-17T18:08:39Z
 description: Let's begin to learn what's Composite Pattern.
 keywords: Composite pattern, design pattern, java
-lastmod: 2020-06-17T18:10:28Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - structural
+    - java
 title: Composite Pattern in Design Pattern
 ---
 
@@ -185,3 +186,10 @@ Employee{id=20002, name='Rob', dept='Sales', salary=10000}
 Employee{id=30001, name='Laura', dept='Marketing', salary=10000}
 Employee{id=30002, name='Bob', dept='Marketing', salary=10000}
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Adapter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-adapter.html)
+- [Bridge Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-bridge.html)
+- [Decorator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-decorator.html)
+- [Proxy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-proxy.html)

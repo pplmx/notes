@@ -4,10 +4,11 @@ categories:
 date: 2020-05-31T20:27:11Z
 description: Let's begin to learn what's strategy Pattern.
 keywords: strategy pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - behavioral
+    - java
 title: Strategy Pattern in Design Pattern
 ---
 
@@ -277,3 +278,12 @@ public class StrategyPatternTester {
     }
 }
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Chain of Responsibility in Design Pattern](https://blog.yoooo.fun/design-pattern-chain4responsibility.html)
+- [Command Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-command.html)
+- [Interpreter Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-interpreter.html)
+- [Iterator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-iterator.html)
+- [Observer Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-observer.html)
+- [State Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-state.html)

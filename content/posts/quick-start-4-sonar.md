@@ -4,12 +4,11 @@ categories:
 date: 2023-04-14T14:18:21Z
 description: how to configure sonarqube with https based on traefik
 keywords: docker,traefik,proxy,sonarqube,sonar,security,https
-lastmod: 2024-08-18T10:42:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - traefik
     - proxy
-    - sonarqube
     - sonar
     - security
 title: 'Quick Start: SonarQube'
@@ -25,7 +24,7 @@ title: 'Quick Start: SonarQube'
 >
 > OR
 >
-> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1-1-traefik-ssl.html)
+> - [Traefik on HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
 >
 > Note: If using HTTP, remove the `tls: {}` in dynamic configuration.
 
@@ -36,7 +35,7 @@ title: 'Quick Start: SonarQube'
 Add the following lines to `/etc/sysctl.conf`:
 
 ```shell
-vm.max_map_count = 524288
+vm.max_map_count = 524288  # SonarQube requires at least 262144
 fs.file-max = 131072
 ```
 
@@ -47,7 +46,7 @@ Apply changes with: `sudo sysctl -p`
 ```yaml
 services:
     sonarqube:
-        image: sonarqube:community
+        image: sonarqube:community  # for a stable LTS, use sonarqube:lts-community (current LTA: 2026.1)
         hostname: sonarqube
         container_name: sonarqube
         depends_on:
@@ -80,7 +79,7 @@ services:
         networks:
             - traefik-net
     db:
-        image: postgres:14
+        image: postgres:16  # SonarQube supports Postgres 13-17; 14 reaches EOL 2026-11-12
         hostname: postgresql
         container_name: postgresql
         environment:
@@ -154,3 +153,14 @@ docker compose up -d
 ```
 
 Access: https://sonar.x.internal
+
+## 本系列（Quick Start）
+- [Quick Start: Traefik Dashboard with Custom Domain](https://blog.yoooo.fun/quick-start-1-traefik.html)
+- [Quick Start: Traefik with HTTPS](https://blog.yoooo.fun/quick-start-1_1-traefik-ssl.html)
+- [Quick Start: Traefik with HTTP/3](https://blog.yoooo.fun/quick-start-1_2-traefik-http3.html)
+- [Quick Start: LDAP](https://blog.yoooo.fun/quick-start-2-ldap.html)
+- [Quick Start: LDAP by Bitnami](https://blog.yoooo.fun/quick-start-2_1-bitnami-ldap.html)
+- [Quick Start: Jenkins](https://blog.yoooo.fun/quick-start-3-jenkins.html)
+- [Quick Start: SonarQube](https://blog.yoooo.fun/quick-start-4-sonar.html)
+- [Quick Start: Gerrit](https://blog.yoooo.fun/quick-start-5-gerrit.html)
+- [Quick Start: SSP](https://blog.yoooo.fun/quick-start-6-ldap-ssp.html)

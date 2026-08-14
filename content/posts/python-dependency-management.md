@@ -2,14 +2,13 @@
 categories:
     - python
 date: 2025-03-09T13:15:22Z
-description: A comprehensive comparison of Python's two approaches for grouping dependencies - Dependency Groups (PEP 735) and Optional Dependencies (PEP 631) - with practical examples using uv
-keywords: dependency groups, optional dependencies, PEP 735, PEP 631, python packaging, uv
+description: A comprehensive comparison of Python's two approaches for grouping dependencies - Dependency Groups (PEP 735) and Optional Dependencies (PEP 621) - with practical examples using uv
+keywords: dependency groups, optional dependencies, PEP 735, PEP 621, python packaging, uv
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - python
     - pip
     - uv
-    - dependencies
-    - pep
 title: 'Understanding Python Dependency Management: Groups vs Optional Dependencies'
 ---
 
@@ -20,7 +19,7 @@ title: 'Understanding Python Dependency Management: Groups vs Optional Dependenc
 Currently, [PEP](https://peps.python.org/) supports two approaches for grouping extra dependencies:
 
 - [PEP 735: Dependency Groups](https://peps.python.org/pep-0735/)
-- [PEP 631: Optional Dependencies](https://peps.python.org/pep-0631/#optional-dependencies)
+- [PEP 621: Optional Dependencies](https://peps.python.org/pep-0621/#dependencies-optional-dependencies)
 
 In this document, we introduce both approaches using `uv`.
 
@@ -63,6 +62,9 @@ uv sync --group cuda
 ```
 
 ## Optional Dependencies
+
+`[project.optional-dependencies]` is defined by [PEP 621](https://peps.python.org/pep-0621/#dependencies-optional-dependencies)
+(the earlier spec PEP 631 has been superseded and merged into PEP 621).
 
 If dependencies are intended for package users, we can use `optional-dependencies` to manage them. For example, `torch` offers both CPU and GPU
 versions, and we can differentiate them using `optional-dependencies`.

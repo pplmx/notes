@@ -4,10 +4,11 @@ categories:
 date: 2020-04-27T15:02:01Z
 description: integrate asciidoc with spring restdocs
 keywords: spring, springboot, restdocs, asciidoc,
-lastmod: 2023-08-18T13:13:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spring
-    - springboot
+    - restdocs
+    - java
 title: Asciidoc with Spring Restdocs
 ---
 
@@ -20,8 +21,9 @@ title: Asciidoc with Spring Restdocs
 **The following is based on Webflux**
 
 ```text
-asciidoctor version: 3.2.0
-spring restdocs version: 2.0.4.RELEASE
+spring boot version: 3.5.16
+asciidoctor plugin version: 3.3.2
+spring restdocs version: 3.0.6
 dependency management: gradle
 ```
 
@@ -40,11 +42,11 @@ The following config is not a complete configuration.
 ```groovy
 // plugins
 plugins {
-    id 'org.springframework.boot' version '2.3.0.M4'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version '3.5.16'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     /* for rest docs */
-    id 'org.asciidoctor.jvm.convert' version '3.2.0'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 configurations {
@@ -53,7 +55,7 @@ configurations {
 
 ext {
     set('snippetsDir', file('build/generated-snippets'))
-    set('springRestdocsVersion', '2.0.4.RELEASE')
+    set('springRestdocsVersion', '3.0.6')
 }
 
 dependencies {
@@ -171,8 +173,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -200,7 +202,7 @@ public class UserControllerTest {
     @Autowired
     private ApplicationContext context;
     private WebTestClient client;
-    @MockBean
+    @MockitoBean
     private UserService userService;
 
     @BeforeEach

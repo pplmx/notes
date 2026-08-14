@@ -4,12 +4,10 @@ categories:
 date: 2023-03-10T17:05:11Z
 description: create a specified network to fix the conflicts
 keywords: docker,network,container,compose,docker-compose
-lastmod: 2023-04-13T17:45:11Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - docker
     - network
-    - container
-    - compose
 title: Docker network conflicts with local networks
 ---
 

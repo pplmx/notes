@@ -4,13 +4,17 @@ categories:
 date: 2017-12-14T10:13:45Z
 description: spider netease music by python
 keywords: spider, python
-lastmod: 2020-11-11T16:31:07Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spider
+    - python
+    - music
 title: 抓取网易云音乐歌单
 ---
 
 
+
+> **Note (2026-08-14):** 本文针对 2017-2020 年代的 music.163.com 页面结构编写。当日复核:`https://music.163.com/discover/playlist` 仍以服务端渲染返回 200,`ul#m-pl-container`、`a.msk`、`span.nb` 等选择器均仍存在,无需登录,原脚本基本可用;但网易云前端随时可能改版或加反爬,商业用途请改用[官方 API](https://neteasecloudmusicapi.js.org/)或 NeteaseCloudMusicApi。另注意当前歌单图片 `src` 返回的是 `http://` 链接。
 
 # Something needed before action
 

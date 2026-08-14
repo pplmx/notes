@@ -4,9 +4,11 @@ categories:
 date: 2017-10-19T14:06:41Z
 description: spring injection error
 keywords: spring, java
-lastmod: 2020-04-27T22:06:51Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spring
+    - java
+    - troubleshooting
 title: spring注入null
 ---
 

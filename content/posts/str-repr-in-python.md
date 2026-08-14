@@ -4,9 +4,10 @@ categories:
 date: 2020-06-07T22:05:53Z
 description: What's difference between __str__ and __repr__ ?
 keywords: __str__, __repr__, python
-lastmod: 2020-06-07T22:47:00Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
+    - python
+    - OOP
 title: __str__ and __repr__ in Python
 ---
 

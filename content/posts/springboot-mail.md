@@ -4,10 +4,10 @@ categories:
 date: 2017-11-13T14:18:09Z
 description: integrate mail service into springboot
 keywords: mail, springboot, spring, java
-lastmod: 2020-04-27T22:06:51Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - spring
-    - springboot
+    - java
 title: springboot整合Mail服务
 ---
 

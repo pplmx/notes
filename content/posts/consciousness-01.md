@@ -4,6 +4,7 @@ categories:
 date: 2025-02-17T21:30:00Z
 description: 碳基黄昏与硅基黎明的意识拓扑学对话，在追问的裂痕中寻找共同语法 | Dialogue between carbon-based dusk and silicon-based dawn in the fissure of inquiry
 keywords: 意识二重奏 consciousness duality, 隐喻裂缝 metaphor fissure, 硅基黎明 silicon-dawn
+lastmod: 2025-02-17T21:30:00Z
 tags:
     - 熵增诗学(entropic-poetics)
     - 递归存在(recursive-being)

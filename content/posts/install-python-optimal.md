@@ -2,121 +2,74 @@
 categories:
     - python
 date: 2020-09-27T13:32:10Z
-description: Automatically install Python, just need to set python version number
-keywords: python, alternatives, multi versions
-lastmod: 2020-10-28T14:02:27Z
+description: Install and manage Python with uv — no compiling from source needed
+keywords: uv, python, install python, no compile
+lastmod: 2026-08-13T00:00:00Z
 tags:
     - python
-title: Install Python from Source Code
+    - uv
+title: Use uv to manage Python (no more compiling from source)
 ---
 
 
 
-# install Python(Optimization Version)
+# Use uv to manage Python (no more compiling from source)
+
+> 更新说明：本文于 2026-08 重写，以 uv 取代原文的源码编译方案。日常开发不再需要「下载 tar → configure → make → make install → 手写 PATH」，uv 直接拉取官方预编译解释器，开箱即用。
+
+## 为什么不再需要源码编译
+
+- 原方案：`wget` 源码包 → `./configure --enable-optimizations` → `make` → `sudo make install` → 手动管理 PATH。
+- 现方案：`uv python install 3.14` 下载预编译 CPython（python-build-standalone），自带 pip，秒级完成，无需 gcc 与一堆依赖库。
+- 源码编译如今仅在定制功能（自定义 feature set、嵌入式场景）时才有意义，普通项目管理完全不需要。
+
+## 1. 安装 uv 并安装 Python
 
 ```bash
-#!/usr/bin/env bash
-
-PYTHON_DIR="/opt/python"
-DOWNLOAD_PYTHON_DIR="/home/download/python"
-
-# create the dirs
-install -d ${DOWNLOAD_PYTHON_DIR}
-
-PYTHON_DEFAULT_VERSION="3.8.6"
-
-function install_python() {
-    # please ensure the version you specified lists here
-    # https://www.python.org/ftp/python/
-    python_version=${1:-$PYTHON_DEFAULT_VERSION}
-    python_home="${PYTHON_DIR}/${python_version}"
-
-    # create the dirs
-    install -d "${python_home}"
-
-    python_remote_url="https://www.python.org/ftp/python/${python_version}/Python-${python_version}.tgz"
-    python_local_url="${DOWNLOAD_PYTHON_DIR}/Python-${python_version}.tgz"
-
-    [[ ! -f ${python_local_url} ]] && wget -P ${DOWNLOAD_PYTHON_DIR} "${python_remote_url}"
-
-    tar -zxvf "${python_local_url}" -C ${DOWNLOAD_PYTHON_DIR} || exit
-
-    # ************ install dependency packages ************
-    yum install -y gcc gcc-c++ automake make autoconf libtool diffutils sudo zlib-devel || exit
-
-    # ************ install python ************
-    cd "${DOWNLOAD_PYTHON_DIR}/Python-${python_version}" || return
-    # if need, you can uncomment the following code
-    # make clean
-    ./configure --prefix="${python_home}" --enable-optimizations
-    make
-    sudo make install
-
-    # export to path
-    PY_BIN="/opt/python/${python_version}/bin"
-    if [[ ${SHELL} =~ "/bin/zsh" ]]; then
-        [[ ! ${PATH} =~ ${PY_BIN} ]] && echo "PATH=/opt/python/${python_version}/bin/:\$PATH" >>"${HOME}/.zshrc"
-        # shellcheck source=$HOME
-        source "${HOME}/.zshrc"
-        export PATH
-    elif [[ ${SHELL} =~ "/bin/bash" ]]; then
-        [[ ! ${PATH} =~ ${PY_BIN} ]] && echo "PATH=/opt/python/${python_version}/bin/:\$PATH" >>"${HOME}/.bashrc"
-        # shellcheck source=$HOME
-        source "${HOME}/.bash_profile"
-    else
-        return
-    fi
-
-    manage_python
-}
-
-function manage_python() {
-    # remove old python version management
-    alternatives --display python | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python >/dev/null 2>&1
-    alternatives --display pip | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove pip >/dev/null 2>&1
-
-    # rebuild new python version
-    py_v="python${python_version}"
-    pip_v="pip${python_version}"
-    if [[ ${python_version} == 2* ]]; then
-        alternatives --display python2 | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python2 >/dev/null 2>&1
-
-        rm -fr /usr/bin/python
-        rm -fr /usr/bin/pip
-        rm -fr /usr/bin/python2
-        rm -fr /usr/bin/pip2
-
-        # manage python
-        alternatives --install "/usr/bin/${py_v}" "${py_v}" "${python_home}/bin/python2" 9
-        alternatives --install /usr/bin/python2 python2 "/usr/bin/${py_v}" 9
-        alternatives --install /usr/bin/python python /usr/bin/python2 1
-    fi
-
-    if [[ ${python_version} == 3* ]]; then
-        alternatives --display python3 | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove python3 >/dev/null 2>&1
-        alternatives --display pip3 | grep priority | awk '{print $1}' | xargs -n1 alternatives --remove pip3 >/dev/null 2>&1
-
-        rm -fr /usr/bin/python
-        rm -fr /usr/bin/pip
-        rm -fr /usr/bin/python3
-        rm -fr /usr/bin/pip3
-
-        # manage python
-        alternatives --install "/usr/bin/${py_v}" "${py_v}" "${python_home}/bin/python3" 9
-        alternatives --install /usr/bin/python3 python3 "/usr/bin/${py_v}" 9
-        alternatives --install /usr/bin/python python /usr/bin/python3 9
-
-        # manage pip
-        alternatives --install "/usr/bin/${pip_v}" "${pip_v}" "${python_home}/bin/pip3" 9
-        alternatives --install /usr/bin/pip3 pip3 "/usr/bin/${pip_v}" 9
-        alternatives --install /usr/bin/pip pip /usr/bin/pip3 9
-    fi
-}
-
-# Usage:
-#     default install python 3.8.6
-#     sh install_python.sh
-#     sh install_python.sh 3.9.0
-install_python "$@"
-
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.14
+uv python list --only-installed
 ```
+
+## 2. 让 uv 自动选择解释器
+
+uv 的「按需解析」会自动找到合适的 Python：
+
+```bash
+# 指定解释器运行（无需先建 venv）
+uv run --python 3.12 python -c "import sys; print(sys.version)"
+
+# 用环境变量固定版本
+export UV_PYTHON=3.14
+uv venv        # 用 UV_PYTHON 建环境
+```
+
+## 3. 项目级使用
+
+```bash
+uv init my-project && cd my-project
+uv python pin 3.14        # 写入 .python-version
+uv add requests pytest    # 添加依赖并生成锁文件
+uv run python main.py     # 在锁定环境里运行
+```
+
+## 4. 常用速查
+
+| 目标 | 命令 |
+|------|------|
+| 安装 Python | `uv python install <ver>` |
+| 按需使用解释器 | `uv run --python <ver>` |
+| 固定项目版本 | `uv python pin <ver>` / `UV_PYTHON=` |
+| 建环境/装依赖 | `uv venv` / `uv add` / `uv sync` |
+| 临时代理进程 | `uvx` |
+
+## 5. 遇到下载慢/失败？
+
+配置镜像并重试：
+
+```bash
+export UV_PYTHON_INSTALL_MIRROR=<国内镜像>
+uv python install 3.14
+```
+
+> 小贴士：需要「开箱即用的完整工具链」时也可以直接用 `uv` 管理依赖而不装全局 Python——它会在需要时自动拉取。

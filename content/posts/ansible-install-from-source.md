@@ -4,9 +4,11 @@ categories:
 date: 2020-04-30T09:55:47Z
 description: Let's install a software from source in Ansible
 keywords: ansible, install from source, lldpd
-lastmod: 2020-04-30T10:45:50Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - ansible
+    - linux
+    - lldp
 title: ansible install software from source
 ---
 
@@ -25,17 +27,16 @@ cat lldpd.yml
 -   hosts: localhost
     name: lldpd installation
     vars:
-        lldpd_version: 1.0.5
+        lldpd_version: 1.0.22
     tasks:
         -   name: Retrieve lldpd source code
             get_url:
-                # TODO replace it
-                url: https://media.luffy.cx/files/lldpd/lldpd-{{ lldpd_version }}.tar.gz
+                url: https://github.com/lldpd/lldpd/releases/download/{{ lldpd_version }}/lldpd-{{ lldpd_version }}.tar.gz
                 dest: /tmp/lldpd-{{ lldpd_version }}.tar.gz
         -   name: Extract archive
             unarchive:
                 # if configured like as the following, 'Retrieve lldpd source code' task can be removed
-                # src: https://media.luffy.cx/files/lldpd/lldpd-{{ lldpd_version }}.tar.gz
+                # src: https://github.com/lldpd/lldpd/releases/download/{{ lldpd_version }}/lldpd-{{ lldpd_version }}.tar.gz
                 src: /tmp/lldpd-{{ lldpd_version }}.tar.gz
                 dest: /tmp
         -   name: Configure install
@@ -92,3 +93,8 @@ cat lldpd.yml
 ```bash
 ansible-playbook lldpd.yml
 ```
+
+## 相关文章
+
+- [ansible](https://blog.yoooo.fun/ansible.html)
+- [Run a specified role in ansible](https://blog.yoooo.fun/ansible-role-tags.html)

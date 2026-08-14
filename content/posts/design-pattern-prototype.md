@@ -4,10 +4,11 @@ categories:
 date: 2020-06-10T17:20:16Z
 description: Let's begin to learn what's Prototype Pattern.
 keywords: prototype pattern, design pattern, java
-lastmod: 2020-06-10T17:22:33Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - creational
+    - java
 title: Prototype Pattern in Design Pattern
 ---
 
@@ -227,3 +228,9 @@ cachedShape1.getType() = Circle
 cachedShape2.getType() = Square
 cachedShape3.getType() = Rectangle
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Abstract Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-abstract-factory.html)
+- [Builder Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-builder.html)
+- [Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-factory.html)

@@ -4,10 +4,10 @@ categories:
 date: 2020-07-24T15:18:53Z
 description: Update QoS by OpenStack CLi
 keywords: OpenStack, cinder, storage, volume
-lastmod: 2020-10-23T10:37:50Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - storage
-    - cinder
+    - linux
 title: OpenStack Volume
 ---
 
@@ -32,10 +32,15 @@ openstack server list -c ID -c Name | \
 	sed 's@^[[:space:]]*@@g;s@[[:space:]]*$@@g' | \
 	xargs -n1 openstack server show -c id -c name -c addresses -c 'OS-EXT-SRV-ATTR:host' -c 'OS-EXT-SRV-ATTR:instance_name'
 
-# or nova list, the same as above
-# fields can get from `nova show some-vm`'s Property
-nova list --fields name,OS-EXT-SRV-ATTR:instance_name,OS-EXT-SRV-ATTR:host
-nova list --fields name,OS-EXT-SRV-ATTR:instance_name,OS-EXT-SRV-ATTR:host --name vm4qos*
+# The legacy `nova` CLI is retired: python-novaclient no longer ships a `nova`
+# command. Use the `openstack` CLI equivalents instead (same information):
+# (previous equivalent: nova list --fields name,OS-EXT-SRV-ATTR:instance_name,OS-EXT-SRV-ATTR:host --name vm4qos*)
+
+# list servers with host / instance_name columns
+openstack server list --long -c ID -c Name -c 'OS-EXT-SRV-ATTR:host' -c 'OS-EXT-SRV-ATTR:instance_name'
+
+# filter by name pattern (regex, repeat for each vm4qos* server)
+openstack server list --long --name '^vm4qos' -c ID -c Name -c 'OS-EXT-SRV-ATTR:host' -c 'OS-EXT-SRV-ATTR:instance_name'
 ```
 
 ## Prepare Environment for QoS

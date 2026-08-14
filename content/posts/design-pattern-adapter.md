@@ -4,10 +4,11 @@ categories:
 date: 2020-06-06T20:58:54Z
 description: Let's begin to learn what's Adapter Pattern.
 keywords: adapter pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - structural
+    - java
 title: Adapter Pattern in Design Pattern
 ---
 
@@ -243,3 +244,10 @@ Mp4Player.playMp4
 VlcPlayer.playVlc
 AudioPlayer.play: Invalid Media [ avi ], the format is not supported.
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Bridge Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-bridge.html)
+- [Composite Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-composite.html)
+- [Decorator Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-decorator.html)
+- [Proxy Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-proxy.html)

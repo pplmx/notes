@@ -4,10 +4,11 @@ categories:
 date: 2020-05-22T16:38:43Z
 description: Let's begin to learn what's Builder Pattern.
 keywords: builder pattern, design pattern, java
-lastmod: 2020-06-06T22:48:36Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
-    - general
     - design pattern
+    - creational
+    - java
 title: Builder Pattern in Design Pattern
 ---
 
@@ -174,3 +175,9 @@ BUILD SUCCESSFUL in 1s
 2 actionable tasks: 2 executed
 16:36:52: Task execution finished 'BuilderPatternTester.main()'.
 ```
+
+## 相关文章
+- [Design Pattern in Java（总览）](https://blog.yoooo.fun/design-pattern.html)
+- [Abstract Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-abstract-factory.html)
+- [Factory Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-factory.html)
+- [Prototype Pattern in Design Pattern](https://blog.yoooo.fun/design-pattern-prototype.html)

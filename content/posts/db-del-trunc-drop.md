@@ -4,9 +4,10 @@ categories:
 date: 2020-06-23T08:57:45Z
 description: What are the difference among delete, truncate and drop?
 keywords: delete, truncate, drop, DDL, DML
-lastmod: 2020-06-23T09:17:37Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
     - sql
+    - mysql
 title: delete, truncate and drop
 ---
 

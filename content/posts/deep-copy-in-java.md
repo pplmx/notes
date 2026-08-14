@@ -4,8 +4,9 @@ categories:
 date: 2020-06-23T15:00:41Z
 description: Deepcopy by Serializable
 keywords: deepcopy, serializable, java
-lastmod: 2023-08-18T13:13:20Z
+lastmod: 2026-08-14T00:00:00Z
 tags:
+    - java
     - notes
 title: Deepcopy by Serializable in Java
 ---
