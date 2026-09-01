@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Libc on Aurora</title><link>https://notes.yoooo.fun/tags/libc/</link><description>Recent content in Libc on Aurora</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 14 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://notes.yoooo.fun/tags/libc/index.xml" rel="self" type="application/rss+xml"/><item><title>How to upgrade glibc on CentOS 7</title><link>https://notes.yoooo.fun/posts/centos7-upgrade-libc/</link><pubDate>Wed, 28 Feb 2024 21:45:20 +0000</pubDate><guid>https://notes.yoooo.fun/posts/centos7-upgrade-libc/</guid><description>&lt;h1 id="how-to-upgrade-glibc-on-centos7"&gt;how to upgrade glibc on centos7
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;⚠ WARNING: Upgrading GLIBC on CentOS 7 is a high-risk operation!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This process can potentially break your system, especially if done incorrectly.&lt;/p&gt;
+&lt;p&gt;It is highly recommended to &lt;strong&gt;backup your system&lt;/strong&gt; and test the upgrade on a non-production environment first.&lt;/p&gt;
+&lt;p&gt;Proceed with caution!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;⚠ EOL (End-of-Life) era notice&lt;/strong&gt;: CentOS 7 reached EOL on 2024-06-30, and CentOS 8
+(used below only to extract a newer &lt;code&gt;libstdc++&lt;/code&gt;) reached EOL on 2021-12-31; both
+&lt;code&gt;centos:7&lt;/code&gt; and &lt;code&gt;centos:8&lt;/code&gt; images are frozen archive artifacts. The &lt;code&gt;devtoolset-8&lt;/code&gt;
+SCL packages come from the EOL CentOS 7 repo ecosystem and may require switching yum
+to &lt;code&gt;mirror/vault.centos.org&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Version ceiling&lt;/strong&gt;: this trick caps out at &lt;strong&gt;glibc 2.31&lt;/strong&gt;. Modern software (for
+example current Node.js LTS releases) requires glibc 2.34 or newer, so this is not a
+general path to running recent tooling on CentOS 7. For any new workload, migrate to a
+supported OS instead. The well-scoped steps below still work within their 2.31 scope.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This guide provides step-by-step instructions to upgrade the GNU C Library (glibc) and GCC on CentOS 7, along with handling potential issues.&lt;/p&gt;
+&lt;h2 id="check-the-current-version"&gt;check the current version
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;gcc --version
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g++ --version
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;locate libc.so.6
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;locate libstdc++.so.6
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;strings /usr/lib64/libc.so.6 &lt;span class="p"&gt;|&lt;/span&gt; grep -E &lt;span class="s2"&gt;&amp;#34;^GLIBC_&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;strings /usr/lib64/libstdc++.so.6 &lt;span class="p"&gt;|&lt;/span&gt; grep -E &lt;span class="s2"&gt;&amp;#34;^GLIBCXX_&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="install-gcc-8"&gt;install gcc 8
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install -y centos-release-scl
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install -y devtoolset-8
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# enable gcc 8 temporarily&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scl &lt;span class="nb"&gt;enable&lt;/span&gt; devtoolset-8 bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scl &lt;span class="nb"&gt;enable&lt;/span&gt; devtoolset-8 zsh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# enable gcc 8 permanently&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;[ -f /opt/rh/devtoolset-8/enable ] &amp;amp;&amp;amp; source /opt/rh/devtoolset-8/enable&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;[ -f /opt/rh/devtoolset-8/enable ] &amp;amp;&amp;amp; source /opt/rh/devtoolset-8/enable&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; ~/.zshrc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# check the version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;gcc --version
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g++ --version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="install-glibc-231"&gt;install glibc 2.31
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum groupinstall -y &lt;span class="s2"&gt;&amp;#34;Development tools&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install -y gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel ncurses-devel nss-devel
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;GLIBC_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;2.31&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# GNU=&amp;#34;https://ftp.gnu.org/gnu&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;GNU_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://mirrors.aliyun.com/gnu&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GNU_MIRROR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/glibc/glibc-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GLIBC_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar -xf glibc-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GLIBC_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.tar.xz &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; glibc-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GLIBC_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir build&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; build
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;../configure --prefix&lt;span class="o"&gt;=&lt;/span&gt;/usr --with-headers&lt;span class="o"&gt;=&lt;/span&gt;/usr/include --with-binutils&lt;span class="o"&gt;=&lt;/span&gt;/usr/bin --disable-profile --enable-add-ons
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;../configure --prefix&lt;span class="o"&gt;=&lt;/span&gt;/usr &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-headers&lt;span class="o"&gt;=&lt;/span&gt;/usr/include &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-binutils&lt;span class="o"&gt;=&lt;/span&gt;/usr/bin &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --enable-add-ons &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --enable-obsolete-nsl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --disable-profile &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --disable-sanity-checks &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --disable-werror
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make -j8
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="issue-ld-cannot-find--lnss_test2"&gt;issue: &amp;ldquo;ld: cannot find -lnss_test2&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;Maybe you will encounter the following error:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/usr/bin/ld: cannot find -lnss_test2&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You can fix it by the following &lt;a class="link" href="https://garlicspace.com/2020/07/18/centos7-%E5%8D%87%E7%BA%A7-glibc-gcc/#make_install" target="_blank" rel="noopener"
+&gt;this&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: the linked page (garlicspace.com) returns HTTP 404 as of 2026-08 — the link is dead.
+The relevant fix is reproduced inline below.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;vim ../scripts/test-installation.pl +128&lt;/p&gt;
+&lt;p&gt;Before changed:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;amp;&amp;amp; $name ne &amp;quot;nss_test1&amp;quot; &amp;amp;&amp;amp; $name ne &amp;quot;libgcc_s&amp;quot;) {
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;append this condition &lt;code&gt;&amp;amp;&amp;amp; $name ne &amp;quot;nss_test2&amp;quot;&lt;/code&gt; to skip the test of nss_test2&lt;/p&gt;
+&lt;p&gt;Changed:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;amp;&amp;amp; $name ne &amp;quot;nss_test1&amp;quot; &amp;amp;&amp;amp; $name ne &amp;quot;nss_test2&amp;quot; &amp;amp;&amp;amp; $name ne &amp;quot;libgcc_s&amp;quot;) {
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="upgrade-libstdc-if-necessary"&gt;upgrade libstdc++, if necessary
+&lt;/h2&gt;&lt;p&gt;After you have installed glibc 2.31, you also replace the old &lt;code&gt;libstdc++.so.6&lt;/code&gt; with the new one.&lt;/p&gt;
+&lt;p&gt;Before replacing, it looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ls -l /usr/lib64/libstdc++.so.6*&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lrwxrwxrwx. 1 root root 19 Feb 27 22:24 /usr/lib64/libstdc++.so.6 -&amp;gt; libstdc++.so.6.0.19
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-rwxr-xr-x. 1 root root 973K Sep 29 2020 /usr/lib64/libstdc++.so.6.0.19
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;We will replace it with &lt;code&gt;libstdc++.so.6.0.25&lt;/code&gt;.
+But how to get it? A simple way is to use docker image to get it, like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# show the libc and libstdc++ version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;❯ docker container run -it --rm centos:8 bash -c &lt;span class="s2"&gt;&amp;#34;ls -l /lib64/libc.so.6*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lrwxrwxrwx &lt;span class="m"&gt;1&lt;/span&gt; root root &lt;span class="m"&gt;12&lt;/span&gt; Mar &lt;span class="m"&gt;11&lt;/span&gt; &lt;span class="m"&gt;2021&lt;/span&gt; /lib64/libc.so.6 -&amp;gt; libc-2.28.so
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;❯ docker container run -it --rm centos:8 bash -c &lt;span class="s2"&gt;&amp;#34;ls -l /lib64/libstdc++.so.6*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lrwxrwxrwx &lt;span class="m"&gt;1&lt;/span&gt; root root &lt;span class="m"&gt;19&lt;/span&gt; Oct &lt;span class="m"&gt;12&lt;/span&gt; &lt;span class="m"&gt;2020&lt;/span&gt; /lib64/libstdc++.so.6 -&amp;gt; libstdc++.so.6.0.25
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-rwxr-xr-x &lt;span class="m"&gt;1&lt;/span&gt; root root &lt;span class="m"&gt;1661392&lt;/span&gt; Oct &lt;span class="m"&gt;12&lt;/span&gt; &lt;span class="m"&gt;2020&lt;/span&gt; /lib64/libstdc++.so.6.0.25
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# start a container and copy libstdc++ to the host&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker container run -d --name t1 centos:8 init
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker container cp t1:/usr/lib64/libstdc++.so.6.0.25 /var/tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# replace the host libstdc++&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo cp /var/tmp/libstdc++.so.6.0.25 /usr/lib64
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo rm -fr /usr/lib64/libstdc++.so.6
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/lib64&lt;span class="p"&gt;;&lt;/span&gt; sudo ln -s libstdc++.so.6.0.25 libstdc++.so.6
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Replaced, it looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ls -l /usr/lib64/libstdc++.so.6*&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lrwxrwxrwx. 1 root root 19 Feb 27 22:24 /usr/lib64/libstdc++.so.6 -&amp;gt; libstdc++.so.6.0.25
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-rwxr-xr-x. 1 root root 995840 Sep 29 2020 /usr/lib64/libstdc++.so.6.0.19
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-rwxr-xr-x. 1 root root 1661392 Feb 27 22:24 /usr/lib64/libstdc++.so.6.0.25
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="question"&gt;Question
+&lt;/h2&gt;&lt;h3 id="gnome-terminal-cannot-open"&gt;gnome-terminal cannot open
+&lt;/h3&gt;&lt;p&gt;try this command: &lt;code&gt;sudo localedef -f UTF-8 -i en_US en_US.UTF-8&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="相关文章"&gt;相关文章
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.yoooo.fun/centos7-init.html" target="_blank" rel="noopener"
+&gt;Bootstrap a CentOS 7 server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.yoooo.fun/centos7-install-node-18-20.html" target="_blank" rel="noopener"
+&gt;Use node 18/20 on CentOS 7&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How to handle libc version not found in docker multi-stage build</title><link>https://notes.yoooo.fun/posts/libc-version-not-found/</link><pubDate>Fri, 28 Jul 2023 10:48:32 +0000</pubDate><guid>https://notes.yoooo.fun/posts/libc-version-not-found/</guid><description>&lt;h1 id="about-debugging-the-issue-glibc-version-not-found"&gt;About debugging the issue &amp;ldquo;glibc version not found&amp;rdquo;
+&lt;/h1&gt;&lt;h2 id="pre"&gt;Pre
+&lt;/h2&gt;&lt;p&gt;Recently, I wanna build an image from the &lt;code&gt;previous Dockerfile&lt;/code&gt; (Which absolutely works fine before).&lt;/p&gt;
+&lt;p&gt;However, it stuck in &lt;code&gt;libc version not found&lt;/code&gt; when I ran it.&lt;/p&gt;
+&lt;h2 id="dockerfile"&gt;Dockerfile
+&lt;/h2&gt;&lt;p&gt;Here is my Dockerfile&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;golang:1.20&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;so&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# build dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;node:18&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;env&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# install node packages&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/distroless/nodejs18-debian11&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# running js app with golang dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="1st-issue"&gt;1st issue
+&lt;/h2&gt;&lt;p&gt;Upon running the image, it throws:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/usr/lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29 not found(required by ffi-napi)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I realized that maybe the problem is in the second &lt;code&gt;node:18&lt;/code&gt; image, so I changed it to &lt;code&gt;node:16&lt;/code&gt;, but the problem still exists; I tried &lt;code&gt;node:20&lt;/code&gt;
+image again, still again.&lt;/p&gt;
+&lt;p&gt;After a lot of searching, I found that the &lt;code&gt;node:18&lt;/code&gt; image was upgraded from the default system version &lt;code&gt;bullseye&lt;/code&gt; to &lt;code&gt;bookworm&lt;/code&gt;, so I tried to use
+the &lt;code&gt;node:18-bullseye&lt;/code&gt; image, and the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then, I dived into the second issue. &amp;gt;&amp;lt;&amp;hellip;&lt;/p&gt;
+&lt;h2 id="2nd-issue"&gt;2nd issue
+&lt;/h2&gt;&lt;p&gt;After I fixed the 1st issue, it threw another error:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/lib/x86_64-linux-gnu/libc.so.6: version GLIBC_2.32 not found(required by my golang dynamic lib)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Due to the experience of the first issue, after confirming that the &lt;code&gt;golang&lt;/code&gt; image has this version &lt;code&gt;golang:1.20-bullseye&lt;/code&gt;, I immediately tried
+the &lt;code&gt;golang:1.20-bullseye&lt;/code&gt; image, but the problem was not solved as I expected. Sad.&lt;/p&gt;
+&lt;p&gt;After a long time of thinking, I suddenly realized that maybe the system version(Ubuntu 22) of my docker is too high?&lt;/p&gt;
+&lt;p&gt;I immediately tried to use my Ubuntu 18.04 system version to run, and the problem was solved! Wonderful!!!&lt;/p&gt;
+&lt;p&gt;BTW, Changing &lt;code&gt;golang:1.20&lt;/code&gt; to &lt;code&gt;golang:1.20-bullseye&lt;/code&gt; is &lt;strong&gt;necessary&lt;/strong&gt;, if not, it still
+throws &lt;code&gt;/lib/x86_64-linux-gnu/libc.so.6: version GLIBC_2.32 not found&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="fixed-dockerfile"&gt;Fixed Dockerfile
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;golang:1.20-bullseye&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;so&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# build dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;node:18-bullseye&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;env&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# install node packages&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# ...&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/distroless/nodejs18-debian11&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# running js app with golang dynamic lib&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="conclusion"&gt;Conclusion
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;When using FROM in Dockerfile, not only need to specify the software version, but also need to specify the system version&lt;/li&gt;
+&lt;li&gt;The host system version of Docker is not easy to control, just don&amp;rsquo;t be too high or too low&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

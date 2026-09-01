@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Husky on Aurora</title><link>https://notes.yoooo.fun/tags/husky/</link><description>Recent content in Husky on Aurora</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 14 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://notes.yoooo.fun/tags/husky/index.xml" rel="self" type="application/rss+xml"/><item><title>My Open Source Project "husky-rs"</title><link>https://notes.yoooo.fun/posts/mosp-husky-rs/</link><pubDate>Tue, 01 Oct 2024 18:47:20 +0000</pubDate><guid>https://notes.yoooo.fun/posts/mosp-husky-rs/</guid><description>&lt;h1 id="husky-rs"&gt;husky-rs
+&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;husky-rs&lt;/strong&gt; is a lightweight Git hook manager tailored for Rust projects.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/pplmx/husky-rs" target="_blank" rel="noopener"
+&gt;View husky-rs on GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://crates.io/crates/husky-rs" target="_blank" rel="noopener"
+&gt;Get husky-rs on crates.io&lt;/a&gt; (latest: v0.4.0)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="install"&gt;Install
+&lt;/h2&gt;&lt;p&gt;Add it to a Rust project (hooks are installed automatically on &lt;code&gt;cargo build&lt;/code&gt;/&lt;code&gt;cargo test&lt;/code&gt; once a &lt;code&gt;.husky&lt;/code&gt; directory exists):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cargo add husky-rs &lt;span class="c1"&gt;# or: cargo add --dev husky-rs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Or install the optional CLI (provides &lt;code&gt;husky init&lt;/code&gt;, &lt;code&gt;husky add&lt;/code&gt;, &lt;code&gt;husky list&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cargo install husky-rs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="key-features"&gt;Key Features
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Easy Integration&lt;/strong&gt;: Seamlessly integrates into your Rust projects with minimal setup.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automated Efficiency&lt;/strong&gt;: Executes automated tasks via Git hooks, improving team collaboration and productivity.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Flexible Customization&lt;/strong&gt;: Supports a wide variety of Git hooks, allowing for extensive configuration to meet your project’s needs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Explore the project on &lt;a class="link" href="https://github.com/pplmx/husky-rs" target="_blank" rel="noopener"
+&gt;GitHub&lt;/a&gt; for more details and contribute to its development!&lt;/p&gt;</description></item></channel></rss>
